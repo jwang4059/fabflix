@@ -1,5 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+
+import { selectEntities } from "../genres/genresSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -9,15 +12,23 @@ const useStyles = makeStyles((theme) => ({
 
 const MovieCard = ({ movie }) => {
 	const classes = useStyles();
+	const genreMap = useSelector(selectEntities);
+
+	const genres = movie.genre_ids.map((id) => {
+		const name = genreMap[id].name;
+
+		return <p key={id}>- {name}</p>;
+	});
 
 	return (
 		<div className={classes.root}>
-			<p>{movie.original_title}</p>
-			<p>{movie.release_date}</p>
-			<p>Director</p>
-			<p>Genres</p>
+			<p>Title: {movie.movie.title}</p>
+			<p>Date: {movie.movie.date}</p>
+			<p>Director: {movie.director.name}</p>
+			<p>Genres: </p>
+			{genres}
 			<p>Stars</p>
-			<p>Ratings</p>
+			<p>Ratings: {movie.movie.rating}</p>
 		</div>
 	);
 };

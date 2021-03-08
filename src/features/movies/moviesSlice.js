@@ -10,10 +10,10 @@ const initialState = {
 	error: null,
 };
 
-export const fetchMovieTopRated = createAsyncThunk(
-	"movies/fetchMovieTopRated",
-	async () => {
-		const response = await fetch("http://localhost:3001/movie/top_rated");
+export const fetchMovieList = createAsyncThunk(
+	"movies/fetchMovieList",
+	async (sorted) => {
+		const response = await fetch(`http://localhost:3001/movielist/${sorted}`);
 		return response.json();
 	}
 );
@@ -23,14 +23,14 @@ const moviesSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: {
-		[fetchMovieTopRated.pending]: (state) => {
+		[fetchMovieList.pending]: (state) => {
 			state.status = "loading";
 		},
-		[fetchMovieTopRated.fulfilled]: (state, action) => {
+		[fetchMovieList.fulfilled]: (state, action) => {
 			state.data = action.payload;
 			state.status = "succeeded";
 		},
-		[fetchMovieTopRated.rejected]: (state, action) => {
+		[fetchMovieList.rejected]: (state, action) => {
 			state.error = action.error.message;
 			state.status = "failed";
 		},

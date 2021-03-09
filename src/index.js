@@ -6,8 +6,10 @@ import store from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 
+import { fetchConfiguration } from "./features/configuration/configurationSlice";
 import { fetchGenres } from "./features/genres/genresSlice";
 
+store.dispatch(fetchConfiguration());
 store.dispatch(fetchGenres());
 
 ReactDOM.render(

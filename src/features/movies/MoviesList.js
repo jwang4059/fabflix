@@ -22,9 +22,7 @@ const MoviesList = () => {
 	if (moviesStatus === "loading") {
 		content = <div className="loader">Loading...</div>;
 	} else if (moviesStatus === "succeeded") {
-		content = movies.map((movie) => (
-			<MovieCard key={movie.movie.id} movie={movie} />
-		));
+		content = movies.map((movie) => <MovieCard key={movie.id} movie={movie} />);
 	} else if (moviesStatus === "failed") {
 		content = <div>{error}</div>;
 	}

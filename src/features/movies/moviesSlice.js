@@ -1,14 +1,15 @@
 import {
 	createSlice,
 	createAsyncThunk,
-	createSelector,
+	createEntityAdapter,
 } from "@reduxjs/toolkit";
 
-const initialState = {
-	data: [],
+const moviesAdapter = createEntityAdapter();
+
+const initialState = moviesAdapter.getInitialState({
 	status: "idle",
 	error: null,
-};
+});
 
 export const fetchMovieList = createAsyncThunk(
 	"movies/fetchMovieList",
@@ -27,7 +28,7 @@ const moviesSlice = createSlice({
 			state.status = "loading";
 		},
 		[fetchMovieList.fulfilled]: (state, action) => {
-			state.data = action.payload;
+			moviesAdapter.setAll(state, action.payload);
 			state.status = "succeeded";
 		},
 		[fetchMovieList.rejected]: (state, action) => {
@@ -37,6 +38,8 @@ const moviesSlice = createSlice({
 	},
 });
 
-export const selectAllMovies = (state) => state.movies.data;
-
 export default moviesSlice.reducer;
+
+export const { selectAll: selectAllMovies } = moviesAdapter.getSelectors(
+	(state) => state.movies
+);

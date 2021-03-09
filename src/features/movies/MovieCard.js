@@ -22,13 +22,13 @@ const MovieCard = ({ movie }) => {
 
 	return (
 		<div className={classes.root}>
-			<p>Title: {movie.movie.title}</p>
-			<p>Date: {movie.movie.date}</p>
+			<p>Title: {movie.title}</p>
+			<p>Date: {movie.date}</p>
 			<p>Director: {movie.director.name}</p>
 			<p>Genres: </p>
 			{genres}
 			<p>Stars</p>
-			<p>Ratings: {movie.movie.rating}</p>
+			<p>Ratings: {movie.rating}</p>
 		</div>
 	);
 };

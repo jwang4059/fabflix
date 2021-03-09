@@ -37,6 +37,6 @@ const genresSlice = createSlice({
 
 export default genresSlice.reducer;
 
-export const { selectEntities } = genresAdapter.getSelectors(
+export const { selectEntities: selectGenreMap } = genresAdapter.getSelectors(
 	(state) => state.genres
 );

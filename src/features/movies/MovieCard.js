@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { selectEntities } from "../genres/genresSlice";
+import { selectGenreMap } from "../genres/genresSlice";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MovieCard = ({ movie }) => {
 	const classes = useStyles();
-	const genreMap = useSelector(selectEntities);
+	const genreMap = useSelector(selectGenreMap);
 
 	const genres = movie.genre_ids.map((id) => {
 		const name = genreMap[id].name;

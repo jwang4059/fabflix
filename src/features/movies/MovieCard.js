@@ -61,7 +61,7 @@ const MovieCard = ({ movie }) => {
 	const classes = useStyles();
 	const genreMap = useSelector(selectGenreMap);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
-	const imageUrl = `${imageBaseUrl}w185${movie.images.poster_path}`;
+	const imageUrl = `${imageBaseUrl}w185${movie.poster_path}`;
 
 	const year = movie.date.split("-")[0];
 	const stars = movie.stars

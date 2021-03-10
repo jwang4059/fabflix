@@ -23,8 +23,8 @@ export default function ButtonAppBar() {
 	const classes = useStyles();
 
 	return (
-		<div id="mybarbar" className={classes.root}>
-			<AppBar position="static">
+		<>
+			<AppBar className={classes.root} position="static">
 				<Toolbar>
 					<IconButton
 						edge="start"
@@ -35,11 +35,11 @@ export default function ButtonAppBar() {
 						<MenuIcon />
 					</IconButton>
 					<Typography variant="h6" className={classes.title}>
-						News
+						Fabflix
 					</Typography>
 					<Button color="inherit">Login</Button>
 				</Toolbar>
 			</AppBar>
-		</div>
+		</>
 	);
 }

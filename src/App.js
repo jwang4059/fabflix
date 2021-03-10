@@ -1,14 +1,10 @@
 import React from "react";
 
 import Layout from "./features/layout/Layout";
-import MoviesList from "./features/movies/MoviesList";
+import MoviesListPage from "./pages/MovieListPage";
 
 function App() {
-	return (
-		<Layout>
-			<MoviesList />
-		</Layout>
-	);
+	return <MoviesListPage />;
 }
 
 export default App;

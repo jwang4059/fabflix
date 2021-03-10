@@ -71,16 +71,6 @@ const MovieCard = ({ movie }) => {
 	const genres = movie.genre_ids.map((id) => genreMap[id].name).join(" | ");
 
 	return (
-		// <div className={classes.root}>
-		//
-		// 	<p>Title: {movie.title}</p>
-		// 	<p>Date: {movie.date}</p>
-		// 	<p>Director: {movie.director.name}</p>
-		// 	<p>Genres: </p>
-		// 	{genres}
-		// 	<p>Stars</p>
-		// 	<p>Ratings: {movie.rating}</p>
-		// </div>
 		<Card className={classes.card}>
 			<div className={classes.content}>
 				<div className={classes.imageContainer}>

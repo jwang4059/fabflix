@@ -1,11 +1,7 @@
-import {
-	createSlice,
-	createAsyncThunk,
-	createSelector,
-} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-	data: null,
+	data: [],
 	status: "idle",
 	error: null,
 };

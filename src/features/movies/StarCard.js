@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 		height: "14rem",
 		width: "8rem",
 		padding: theme.spacing(1),
-		margin: theme.spacing(0, 1),
+		marginRight: theme.spacing(1),
 		flex: "0 0 auto",
 	},
 	content: {

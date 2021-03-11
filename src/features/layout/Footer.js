@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles((theme) => ({
 	footer: {
 		flexShrink: 0,
-		marginBottom: theme.spacing(2),
+		margin: theme.spacing(2, 0),
 	},
 }));
 

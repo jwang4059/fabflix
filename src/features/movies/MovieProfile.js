@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	content: {
 		display: "flex",
+		marginBottom: theme.spacing(2),
 		[theme.breakpoints.down("xs")]: {
 			flexDirection: "column",
 		},
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 			marginBottom: theme.spacing(2),
 		},
 		[theme.breakpoints.up("sm")]: {
+			flexShrink: 0,
 			marginRight: theme.spacing(2),
 		},
 	},
@@ -43,7 +45,12 @@ const useStyles = makeStyles((theme) => ({
 		objectFit: "cover",
 	},
 	textContainer: {
-		padding: "1rem",
+		[theme.breakpoints.down("xs")]: {
+			padding: 0,
+		},
+		[theme.breakpoints.up("sm")]: {
+			padding: "1rem",
+		},
 	},
 	header: {
 		marginBottom: theme.spacing(2),
@@ -87,7 +94,10 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexWrap: "nowrap",
 		overflowX: "auto",
-		padding: theme.spacing(1),
+		padding: theme.spacing(1, 0),
+	},
+	stars: {
+		fontWeight: 600,
 	},
 }));
 
@@ -149,7 +159,7 @@ const MovieProfile = ({ movie }) => {
 					<Typography>{movie.overview}</Typography>
 				</div>
 			</div>
-			<Typography>Stars:</Typography>
+			<Typography className={classes.stars}>Stars:</Typography>
 			<div className={classes.starsContainer}>{renderedStars}</div>
 		</>
 	);

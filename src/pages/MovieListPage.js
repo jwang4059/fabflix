@@ -1,13 +1,8 @@
 import React from "react";
-import Layout from "../features/layout/Layout";
 import MoviesList from "../features/movies/MoviesList";
 
 const MovieListPage = () => {
-	return (
-		<Layout>
-			<MoviesList />
-		</Layout>
-	);
+	return <MoviesList />;
 };
 
 export default MovieListPage;

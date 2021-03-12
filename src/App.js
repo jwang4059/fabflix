@@ -7,6 +7,8 @@ import {
 	Redirect,
 } from "react-router-dom";
 
+import Layout from "./features/layout/Layout";
+import Loading from "./components/Loading";
 import MoviesListPage from "./pages/MovieListPage";
 import SingleMoviePage from "./pages/SingleMoviePage";
 import { fetchConfiguration } from "./features/configuration/configurationSlice";
@@ -33,7 +35,7 @@ const App = () => {
 	if (configurationStatus === "failed" || genresStatus === "failed") {
 		content = <div>ERROR</div>;
 	} else if (configurationStatus === "loading" || genresStatus === "loading") {
-		content = <div>Loading...</div>;
+		content = <Loading />;
 	} else if (
 		configurationStatus === "succeeded" &&
 		genresStatus === "succeeded"
@@ -49,7 +51,7 @@ const App = () => {
 		);
 	}
 
-	return content;
+	return <Layout>{content}</Layout>;
 };
 
 export default App;

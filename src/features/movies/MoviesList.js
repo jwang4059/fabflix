@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loading from "../../components/Loading";
-import MovieCard from "./MovieCard";
+import MovieListItem from "./MovieListItem";
 import { selectAllMovies, fetchMovieList } from "./moviesSlice";
 
 const MoviesList = () => {
@@ -23,7 +23,9 @@ const MoviesList = () => {
 	if (moviesStatus === "loading") {
 		content = <Loading />;
 	} else if (moviesStatus === "succeeded") {
-		content = movies.map((movie) => <MovieCard key={movie.id} movie={movie} />);
+		content = movies.map((movie) => (
+			<MovieListItem key={movie.id} movie={movie} />
+		));
 	} else if (moviesStatus === "failed") {
 		content = <div>{error}</div>;
 	}

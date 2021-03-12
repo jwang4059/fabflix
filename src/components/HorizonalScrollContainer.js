@@ -6,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		flexWrap: "nowrap",
 		overflowX: "auto",
+		overflowY: "hidden",
 		padding: theme.spacing(1, 0),
 	},
 }));

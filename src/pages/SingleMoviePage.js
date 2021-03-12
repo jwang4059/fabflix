@@ -73,9 +73,6 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: 400,
 		color: theme.palette.text.secondary,
 	},
-	director: {
-		fontWeight: 600,
-	},
 	ratingContainer: {
 		display: "flex",
 		alignItems: "center",
@@ -88,19 +85,13 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "1.5rem",
 		lineHeight: "2rem",
 	},
-	starsContainer: {
-		display: "flex",
-		flexWrap: "nowrap",
-		overflowX: "auto",
-		padding: theme.spacing(1, 0),
-	},
-	stars: {
+	semiBold: {
 		fontWeight: 600,
 	},
 }));
 
 const Banner = ({ classes, movie, imageBaseUrl }) => {
-	const backdropUrl = `${imageBaseUrl}original${movie.backdrop_path}`;
+	const backdropUrl = imageBaseUrl + movie.backdrop_path;
 
 	return (
 		<Box component="section" display="flex" justifyContent="center" my={4}>
@@ -110,7 +101,7 @@ const Banner = ({ classes, movie, imageBaseUrl }) => {
 };
 
 const Poster = ({ classes, movie, imageBaseUrl }) => {
-	const posterUrl = `${imageBaseUrl}original${movie.poster_path}`;
+	const posterUrl = imageBaseUrl + movie.poster_path;
 
 	return (
 		<div className={classes.imageContainer}>
@@ -133,7 +124,7 @@ const MovieInfo = ({ classes, movie }) => {
 			</Typography>
 			<Typography gutterBottom>{genres}</Typography>
 			<Typography>
-				<span className={classes.director}>Director:</span> {director}
+				<span className={classes.semiBold}>Director:</span> {director}
 			</Typography>
 		</div>
 	);
@@ -157,17 +148,15 @@ const Rating = ({ classes, movie }) => {
 };
 
 const Stars = ({ classes, movie }) => {
-	const stars = movie.credits.cast.filter(
-		(person) => person.known_for_department === "Acting"
-	);
-
-	const starCards = stars.map((star) => {
-		return <StarCard key={star.id} star={star} />;
-	});
+	const starCards = movie.credits.cast
+		.filter((person) => person.known_for_department === "Acting")
+		.map((star) => {
+			return <StarCard key={star.id} star={star} />;
+		});
 
 	return (
 		<Box component="section" my={4}>
-			<Typography className={classes.stars}>Stars:</Typography>
+			<Typography className={classes.semiBold}>Stars:</Typography>
 			<HorizontalScrollContainer>{starCards}</HorizontalScrollContainer>
 		</Box>
 	);

@@ -35,6 +35,6 @@ const configurationSlice = createSlice({
 
 export const selectConfiguration = (state) => state.configuration.data;
 export const selectImageBaseUrl = (state) =>
-	state.configuration.data.images.secure_base_url;
+	state.configuration.data.images.secure_base_url + "original";
 
 export default configurationSlice.reducer;

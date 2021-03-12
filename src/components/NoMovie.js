@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import PersonIcon from "@material-ui/icons/Person";
+import MovieIcon from "@material-ui/icons/Movie";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -19,7 +19,7 @@ const NoPerson = () => {
 
 	return (
 		<div className={classes.root}>
-			<PersonIcon fontSize="large" />
+			<MovieIcon fontSize="large" />
 		</div>
 	);
 };

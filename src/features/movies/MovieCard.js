@@ -1,105 +1,60 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import StarIcon from "@material-ui/icons/Star";
 import Typography from "@material-ui/core/Typography";
 
 import { selectImageBaseUrl } from "../configuration/configurationSlice";
-import { selectGenreMap } from "../genres/genresSlice";
+import NoMovie from "../../components/NoMovie";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
-		margin: theme.spacing(2, 0),
+		height: "auto",
+		width: "10rem",
+		marginRight: theme.spacing(1),
+		flex: "0 0 auto",
 	},
 	content: {
 		display: "flex",
-		padding: theme.spacing(1),
-		[theme.breakpoints.down("xs")]: {
-			flexDirection: "column",
-		},
-		[theme.breakpoints.up("sm")]: {
-			flexDirection: "row",
-		},
-	},
-	imageContainer: {
-		display: "flex",
+		flexDirection: "column",
 		justifyContent: "center",
 		alignItems: "center",
-		[theme.breakpoints.down("xs")]: {
-			marginTop: "2rem",
-		},
+		textAlign: "center",
 	},
-	textContainer: {
-		padding: "2rem",
-	},
-	cardHeader: {
-		marginBottom: theme.spacing(2),
+	poster: {
+		height: "12rem",
+		width: "80%",
+		objectFit: "cover",
+		borderRadius: "0.5rem",
 	},
 	title: {
-		fontSize: "1.125rem",
-		lineHeight: 1.25,
-		fontWeight: 700,
-	},
-	date: {
 		fontSize: "0.875rem",
-		lineHeight: 1.25,
-		fontWeight: 400,
-		color: "rgba(0, 0, 0, 0.54)",
-	},
-	rating: {
-		display: "flex",
-		alignItems: "center",
+		lineHeight: "1.25rem",
+		margin: theme.spacing(2, 0),
 	},
 }));
 
-const MovieCard = ({ movie }) => {
+const StarCard = ({ movie }) => {
 	const classes = useStyles();
-	const genreMap = useSelector(selectGenreMap);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
-	const imageUrl = `${imageBaseUrl}w185${movie.poster_path}`;
 
-	const year = movie.date.split("-")[0];
-	const stars = movie.stars
-		.slice(0, 3)
-		.map((star) => star.name)
-		.join(", ");
-	const genres = movie.genre_ids.map((id) => genreMap[id].name).join(" | ");
+	let poster = null;
+	if (!movie.poster_path) {
+		poster = <NoMovie />;
+	} else {
+		const posterUrl = imageBaseUrl + movie.poster_path;
+		poster = <img className={classes.poster} src={posterUrl} alt="" />;
+	}
 
 	return (
-		<Card className={classes.card}>
+		<div className={classes.card}>
 			<div className={classes.content}>
-				<div className={classes.imageContainer}>
-					<CardMedia>
-						<img src={imageUrl} alt="" />
-					</CardMedia>
-				</div>
-				<div className={classes.textContainer}>
-					<CardContent>
-						<div className={classes.cardHeader}>
-							<Typography className={classes.title}>
-								{movie.title} <span className={classes.date}>({year})</span>
-							</Typography>
-							<Typography>{genres}</Typography>
-							<div className={classes.rating}>
-								<StarIcon style={{ color: "#FACC15", marginRight: "8px" }} />
-								<Typography>{movie.rating}/10</Typography>
-							</div>
-						</div>
-						<Typography>Director: {movie.director.name}</Typography>
-						<Typography>Stars: {stars}</Typography>
-					</CardContent>
-					<CardActions>
-						<Button>View More</Button>
-					</CardActions>
+				{poster}
+				<div>
+					<Typography className={classes.title}>{movie.title}</Typography>
 				</div>
 			</div>
-		</Card>
+		</div>
 	);
 };
 
-export default MovieCard;
+export default StarCard;

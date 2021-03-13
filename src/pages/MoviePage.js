@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import StarIcon from "@material-ui/icons/Star";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import Loading from "../components/Loading";
+import NoMovie from "../components/NoMovie";
 import HorizontalScrollContainer from "../components/HorizonalScrollContainer";
 import { selectImageBaseUrl } from "../features/configuration/configurationSlice";
 import StarCard from "../features/movies/StarCard";
@@ -90,7 +93,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Banner = ({ classes, movie, imageBaseUrl }) => {
+const Backdrop = ({ classes, movie, imageBaseUrl }) => {
+	if (!movie.backdrop_path) {
+		return null;
+	}
+
 	const backdropUrl = imageBaseUrl + movie.backdrop_path;
 
 	return (
@@ -101,13 +108,15 @@ const Banner = ({ classes, movie, imageBaseUrl }) => {
 };
 
 const Poster = ({ classes, movie, imageBaseUrl }) => {
-	const posterUrl = imageBaseUrl + movie.poster_path;
+	let poster = null;
+	if (!movie.poster_path) {
+		poster = <NoMovie height={"18rem"} width={"12rem"} />;
+	} else {
+		const posterUrl = imageBaseUrl + movie.poster_path;
+		poster = <img className={classes.poster} src={posterUrl} alt="" />;
+	}
 
-	return (
-		<div className={classes.imageContainer}>
-			<img className={classes.poster} src={posterUrl} alt="" />
-		</div>
-	);
+	return <div className={classes.imageContainer}>{poster}</div>;
 };
 
 const MovieInfo = ({ classes, movie }) => {
@@ -162,7 +171,7 @@ const Stars = ({ classes, movie }) => {
 	);
 };
 
-const SingleMoviePage = ({ match }) => {
+const MoviePage = ({ match }) => {
 	const { movie_id } = match.params;
 
 	const classes = useStyles();
@@ -186,7 +195,7 @@ const SingleMoviePage = ({ match }) => {
 
 	return (
 		<>
-			<Banner classes={classes} movie={movie} imageBaseUrl={imageBaseUrl} />
+			<Backdrop classes={classes} movie={movie} imageBaseUrl={imageBaseUrl} />
 
 			<section className={classes.main}>
 				<Poster classes={classes} movie={movie} imageBaseUrl={imageBaseUrl} />
@@ -200,8 +209,16 @@ const SingleMoviePage = ({ match }) => {
 			</section>
 
 			<Stars classes={classes} movie={movie} />
+
+			<Box display="flex" justifyContent="center" alignItems="center">
+				<Link to="/movielist">
+					<Button variant="contained" color="primary" size="large">
+						Back to movie list
+					</Button>
+				</Link>
+			</Box>
 		</>
 	);
 };
 
-export default SingleMoviePage;
+export default MoviePage;

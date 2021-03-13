@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -26,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
 		objectFit: "cover",
 		borderRadius: "0.5rem",
 	},
+	link: {
+		height: "100%",
+		width: "100%",
+	},
 	title: {
 		fontSize: "0.875rem",
 		lineHeight: "1.25rem",
@@ -39,21 +44,21 @@ const StarCard = ({ movie }) => {
 
 	let poster = null;
 	if (!movie.poster_path) {
-		poster = <NoMovie />;
+		poster = <NoMovie height={"12rem"} width={"80%"} />;
 	} else {
 		const posterUrl = imageBaseUrl + movie.poster_path;
 		poster = <img className={classes.poster} src={posterUrl} alt="" />;
 	}
 
 	return (
-		<div className={classes.card}>
-			<div className={classes.content}>
-				{poster}
-				<div>
+		<Link className={classes.link} to={`/movie/${movie.id}`}>
+			<div className={classes.card}>
+				<div className={classes.content}>
+					{poster}
 					<Typography className={classes.title}>{movie.title}</Typography>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 

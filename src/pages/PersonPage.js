@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import Loading from "../components/Loading";
+import NoPerson from "../components/NoPerson";
 import HorizontalScrollContainer from "../components/HorizonalScrollContainer";
 import { selectImageBaseUrl } from "../features/configuration/configurationSlice";
 import MovieCard from "../features/movies/MovieCard";
@@ -70,13 +73,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Profile = ({ classes, person, imageBaseUrl }) => {
-	const profileUrl = imageBaseUrl + person.profile_path;
+	let profile = null;
+	if (!person.profile_path) {
+		profile = <NoPerson height={"18rem"} width={"12rem"} />;
+	} else {
+		const profileUrl = imageBaseUrl + person.profile_path;
+		profile = <img className={classes.profile} src={profileUrl} alt="" />;
+	}
 
-	return (
-		<div className={classes.imageContainer}>
-			<img className={classes.profile} src={profileUrl} alt="" />
-		</div>
-	);
+	return <div className={classes.imageContainer}>{profile}</div>;
 };
 
 const Movies = ({ classes, person }) => {
@@ -126,7 +131,7 @@ const PersonPage = ({ match }) => {
 					<Typography className={classes.name}>{person.name}</Typography>
 					<Typography>
 						<span className={classes.semiBold}>Birthday:</span>{" "}
-						{person.birthday}
+						{person.birthday ? person.birthday : "N/A"}
 					</Typography>
 					<Typography className={classes.biography}>
 						{person.biography}
@@ -135,6 +140,14 @@ const PersonPage = ({ match }) => {
 			</section>
 
 			<Movies classes={classes} person={person} />
+
+			<Box display="flex" justifyContent="center" alignItems="center">
+				<Link to="/movielist">
+					<Button variant="contained" color="primary" size="large">
+						Back to movie list
+					</Button>
+				</Link>
+			</Box>
 		</>
 	);
 };

@@ -9,9 +9,9 @@ import {
 
 import Layout from "./features/layout/Layout";
 import Loading from "./components/Loading";
-import PersonPage from "./pages/PersonPage";
 import MoviesListPage from "./pages/MovieListPage";
-import SingleMoviePage from "./pages/SingleMoviePage";
+import MoviePage from "./pages/MoviePage";
+import PersonPage from "./pages/PersonPage";
 import { fetchConfiguration } from "./features/configuration/configurationSlice";
 import { fetchGenres } from "./features/genres/genresSlice";
 
@@ -45,7 +45,7 @@ const App = () => {
 			<Router>
 				<Switch>
 					<Route exact path="/" component={MoviesListPage} />
-					<Route exact path="/movie/:movie_id" component={SingleMoviePage} />
+					<Route exact path="/movie/:movie_id" component={MoviePage} />
 					<Route exact path="/person/:person_id" component={PersonPage} />
 					<Redirect to="/" />
 				</Switch>

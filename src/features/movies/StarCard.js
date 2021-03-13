@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -41,24 +42,26 @@ const StarCard = ({ star }) => {
 
 	let profile = null;
 	if (!star.profile_path) {
-		profile = <NoPerson />;
+		profile = <NoPerson height={"12rem"} width={"80%"} />;
 	} else {
 		const profileUrl = imageBaseUrl + star.profile_path;
 		profile = <img className={classes.profile} src={profileUrl} alt="" />;
 	}
 
 	return (
-		<div className={classes.card}>
-			<div className={classes.content}>
-				{profile}
-				<div className={classes.label}>
-					<Typography className={classes.name}>{star.name}</Typography>
-					<Typography variant="caption" color="textSecondary">
-						{star.character}
-					</Typography>
+		<Link to={`/person/${star.id}`}>
+			<div className={classes.card}>
+				<div className={classes.content}>
+					{profile}
+					<div className={classes.label}>
+						<Typography className={classes.name}>{star.name}</Typography>
+						<Typography variant="caption" color="textSecondary">
+							{star.character}
+						</Typography>
+					</div>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 

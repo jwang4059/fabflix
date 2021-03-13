@@ -41,12 +41,6 @@ const useStyles = makeStyles((theme) => ({
 		height: "18rem",
 		objectFit: "cover",
 	},
-	cardContent: {
-		padding: theme.spacing(1),
-	},
-	cardHeader: {
-		marginBottom: theme.spacing(2),
-	},
 	title: {
 		fontSize: "1.125rem",
 		lineHeight: "1.25rem",
@@ -65,6 +59,12 @@ const useStyles = makeStyles((theme) => ({
 	semiBold: {
 		fontWeight: 600,
 	},
+	padding: {
+		padding: "1rem",
+	},
+	marginBottom: {
+		marginBottom: "1rem",
+	},
 }));
 
 const MovieListItem = ({ movie }) => {
@@ -76,8 +76,8 @@ const MovieListItem = ({ movie }) => {
 	const year = movie.date.split("-")[0];
 	const stars = movie.stars
 		.slice(0, 3)
-		.map((star) => star.name)
-		.join(", ");
+		.map((star) => <Link to={`/person/${star.id}`}>{star.name}</Link>)
+		.reduce((acc, x) => (acc === null ? [x] : [acc, ", ", x]), null);
 	const genres = movie.genre_ids.map((id) => genreMap[id].name).join(" | ");
 
 	return (
@@ -89,8 +89,8 @@ const MovieListItem = ({ movie }) => {
 					</CardMedia>
 				</div>
 				<div>
-					<CardContent className={classes.cardContent}>
-						<div className={classes.cardHeader}>
+					<CardContent className={classes.padding}>
+						<div className={classes.marginBottom}>
 							<Typography className={classes.title}>
 								{movie.title} <span className={classes.date}>({year})</span>
 							</Typography>
@@ -108,7 +108,7 @@ const MovieListItem = ({ movie }) => {
 							<span className={classes.semiBold}>Stars:</span> {stars}
 						</Typography>
 					</CardContent>
-					<CardActions>
+					<CardActions className={classes.padding}>
 						<Link to={`/movie/${movie.id}`}>View More</Link>
 					</CardActions>
 				</div>

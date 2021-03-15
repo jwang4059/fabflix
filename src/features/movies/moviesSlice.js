@@ -13,8 +13,8 @@ const initialState = moviesAdapter.getInitialState({
 
 export const fetchMovieList = createAsyncThunk(
 	"movies/fetchMovieList",
-	async (sorted) => {
-		const response = await fetch(`http://localhost:3001/movielist/${sorted}`);
+	async (list) => {
+		const response = await fetch(`http://localhost:3001/movielist/${list}`);
 		return response.json();
 	}
 );

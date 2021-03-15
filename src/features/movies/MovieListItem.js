@@ -73,12 +73,25 @@ const MovieListItem = ({ movie }) => {
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
 	const imageUrl = imageBaseUrl + movie.poster_path;
 
-	const year = movie.date.split("-")[0];
-	const stars = movie.stars
+	const year = movie.release_date.split("-")[0];
+
+	const stars = movie.credits.cast
+		.filter((person) => person.known_for_department === "Acting")
 		.slice(0, 3)
-		.map((star) => <Link to={`/person/${star.id}`}>{star.name}</Link>)
+		.map((star) => (
+			<Link to={`/person/${star.id}`} key={star.id}>
+				{star.name}
+			</Link>
+		))
 		.reduce((acc, x) => (acc === null ? [x] : [acc, ", ", x]), null);
-	const genres = movie.genre_ids.map((id) => genreMap[id].name).join(" | ");
+
+	const director = movie.credits.crew.find(
+		(person) => person.job === "Director"
+	).name;
+
+	const genres = movie.genre_ids
+		.map((id) => genreMap[id].name)
+		.reduce((acc, x) => (acc === null ? [x] : [acc, " | ", x]), null);
 
 	return (
 		<Card className={classes.card}>
@@ -97,12 +110,11 @@ const MovieListItem = ({ movie }) => {
 							<Typography>{genres}</Typography>
 							<div className={classes.rating}>
 								<StarIcon style={{ color: "#FACC15", marginRight: "8px" }} />
-								<Typography>{movie.rating}/10</Typography>
+								<Typography>{movie.vote_average}/10</Typography>
 							</div>
 						</div>
 						<Typography>
-							<span className={classes.semiBold}>Director:</span>{" "}
-							{movie.director.name}
+							<span className={classes.semiBold}>Director:</span> {director}
 						</Typography>
 						<Typography>
 							<span className={classes.semiBold}>Stars:</span> {stars}

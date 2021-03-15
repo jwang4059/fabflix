@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -9,7 +10,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Collapse from "@material-ui/core/Collapse";
+import TheatersIcon from "@material-ui/icons/Theaters";
 import MovieIcon from "@material-ui/icons/Movie";
+import SearchIcon from "@material-ui/icons/Search";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
@@ -17,12 +21,11 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 
+import { selectAllGenres } from "../genres/genresSlice";
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
-	},
-	appBar: {
-		zIndex: theme.zIndex.drawer + 1,
 	},
 	menuButton: {
 		marginRight: "1rem",
@@ -30,25 +33,36 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		flexGrow: 1,
 	},
+	drawerHeader: {
+		display: "flex",
+		alignItems: "center",
+		padding: theme.spacing(0, 1),
+		...theme.mixins.toolbar,
+		justifyContent: "flex-end",
+	},
 	list: {
 		width: 250,
 	},
 	nested: {
-		paddingLeft: "2rem",
+		paddingLeft: "5rem",
 	},
 }));
 
-export default function ButtonAppBar() {
+const Header = () => {
 	const classes = useStyles();
+	const genres = useSelector(selectAllGenres);
 	const [openDrawer, setOpenDrawer] = useState(false);
 	const [openMovies, setOpenMovies] = useState(false);
-
-	const toggleDrawer = (open) => () => {
-		setOpenDrawer(open);
-	};
+	const [openBrowse, setOpenBrowse] = useState(false);
 
 	const MenuList = () => (
 		<div className={classes.list} role="presentation">
+			<div className={classes.drawerHeader}>
+				<IconButton onClick={() => setOpenDrawer(false)}>
+					<ChevronLeftIcon />
+				</IconButton>
+			</div>
+			<Divider />
 			<List>
 				<ListItem button>
 					<ListItemIcon>
@@ -58,7 +72,7 @@ export default function ButtonAppBar() {
 				</ListItem>
 				<ListItem button onClick={() => setOpenMovies(!openMovies)}>
 					<ListItemIcon>
-						<MovieIcon />
+						<TheatersIcon />
 					</ListItemIcon>
 					<ListItemText primary="Movies" />
 					{openMovies ? <ExpandLess /> : <ExpandMore />}
@@ -66,11 +80,33 @@ export default function ButtonAppBar() {
 				<Collapse in={openMovies} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
 						<ListItem button className={classes.nested}>
-							<ListItemIcon>
-								<MovieIcon />
-							</ListItemIcon>
 							<ListItemText primary="Top Rated" />
 						</ListItem>
+						<ListItem button className={classes.nested}>
+							<ListItemText primary="Popular" />
+						</ListItem>
+						<ListItem button className={classes.nested}>
+							<ListItemText primary="Now Playing" />
+						</ListItem>
+						<ListItem button className={classes.nested}>
+							<ListItemText primary="Upcoming" />
+						</ListItem>
+					</List>
+				</Collapse>
+				<ListItem button onClick={() => setOpenBrowse(!openBrowse)}>
+					<ListItemIcon>
+						<SearchIcon />
+					</ListItemIcon>
+					<ListItemText primary="Browse" />
+					{openBrowse ? <ExpandLess /> : <ExpandMore />}
+				</ListItem>
+				<Collapse in={openBrowse} timeout="auto" unmountOnExit>
+					<List component="div" disablePadding>
+						{genres.map((genre) => (
+							<ListItem button className={classes.nested} key={genre.id}>
+								<ListItemText primary={genre.name} />
+							</ListItem>
+						))}
 					</List>
 				</Collapse>
 			</List>
@@ -88,14 +124,14 @@ export default function ButtonAppBar() {
 
 	return (
 		<div className={classes.root}>
-			<AppBar className={classes.appBar} position="fixed">
+			<AppBar position="static">
 				<Toolbar>
 					<IconButton
 						edge="start"
 						className={classes.menuButton}
 						color="inherit"
 						aria-label="menu"
-						onClick={toggleDrawer(true)}
+						onClick={() => setOpenDrawer(true)}
 					>
 						<MenuIcon />
 					</IconButton>
@@ -108,12 +144,13 @@ export default function ButtonAppBar() {
 			<SwipeableDrawer
 				anchor="left"
 				open={openDrawer}
-				onClose={toggleDrawer(false)}
-				onOpen={toggleDrawer(true)}
+				onClose={() => setOpenDrawer(false)}
+				onOpen={() => setOpenDrawer(true)}
 			>
-				<Toolbar />
 				<MenuList />
 			</SwipeableDrawer>
 		</div>
 	);
-}
+};
+
+export default Header;

@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 
 import { selectImageBaseUrl } from "../configuration/configurationSlice";
 import { selectGenreMap } from "../genres/genresSlice";
+import NoMovie from "../../components/NoMovie";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	poster: {
 		height: "18rem",
+		width: "12rem",
 		objectFit: "cover",
 	},
 	title: {
@@ -71,7 +73,14 @@ const MovieListItem = ({ movie }) => {
 	const classes = useStyles();
 	const genreMap = useSelector(selectGenreMap);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
-	const imageUrl = imageBaseUrl + movie.poster_path;
+
+	let poster = null;
+	if (!movie.poster_path) {
+		poster = <NoMovie height={"18rem"} width={"12rem"} />;
+	} else {
+		const posterUrl = imageBaseUrl + movie.poster_path;
+		poster = <img className={classes.poster} src={posterUrl} alt="" />;
+	}
 
 	const year = movie.release_date.split("-")[0];
 
@@ -87,7 +96,7 @@ const MovieListItem = ({ movie }) => {
 
 	const director = movie.credits.crew.find(
 		(person) => person.job === "Director"
-	).name;
+	);
 
 	const genres = movie.genre_ids
 		.map((id) => genreMap[id].name)
@@ -97,9 +106,7 @@ const MovieListItem = ({ movie }) => {
 		<Card className={classes.card}>
 			<div className={classes.content}>
 				<div className={classes.imageContainer}>
-					<CardMedia>
-						<img className={classes.poster} src={imageUrl} alt="" />
-					</CardMedia>
+					<CardMedia>{poster}</CardMedia>
 				</div>
 				<div>
 					<CardContent className={classes.padding}>
@@ -114,7 +121,8 @@ const MovieListItem = ({ movie }) => {
 							</div>
 						</div>
 						<Typography>
-							<span className={classes.semiBold}>Director:</span> {director}
+							<span className={classes.semiBold}>Director:</span>{" "}
+							{director ? director.name : "N/A"}
 						</Typography>
 						<Typography>
 							<span className={classes.semiBold}>Stars:</span> {stars}

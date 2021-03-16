@@ -1,36 +1,13 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 
-import Loading from "../../components/Loading";
 import MovieListItem from "./MovieListItem";
-import { selectAllMovies, fetchMovieList } from "./moviesSlice";
 
-const MoviesList = () => {
-	const dispatch = useDispatch();
-	const movies = useSelector(selectAllMovies);
+const MoviesList = ({ movies }) => {
+	const renderedMovies = movies.map((movie) => (
+		<MovieListItem key={movie.id} movie={movie} />
+	));
 
-	const moviesStatus = useSelector((state) => state.movies.status);
-	const error = useSelector((state) => state.movies.error);
-
-	useEffect(() => {
-		if (moviesStatus === "idle") {
-			dispatch(fetchMovieList("top_rated"));
-		}
-	}, [moviesStatus, dispatch]);
-
-	let content = null;
-
-	if (moviesStatus === "loading") {
-		content = <Loading />;
-	} else if (moviesStatus === "succeeded") {
-		content = movies.map((movie) => (
-			<MovieListItem key={movie.id} movie={movie} />
-		));
-	} else if (moviesStatus === "failed") {
-		content = <div>{error}</div>;
-	}
-
-	return <section>{content}</section>;
+	return <section>{renderedMovies}</section>;
 };
 
 export default MoviesList;

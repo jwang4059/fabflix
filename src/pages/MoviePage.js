@@ -124,7 +124,7 @@ const MovieInfo = ({ classes, movie }) => {
 	const genres = movie.genres.map((genre) => genre.name).join(" | ");
 	const director = movie.credits.crew.find(
 		(person) => person.job === "Director"
-	).name;
+	);
 
 	return (
 		<div>
@@ -133,7 +133,8 @@ const MovieInfo = ({ classes, movie }) => {
 			</Typography>
 			<Typography gutterBottom>{genres}</Typography>
 			<Typography>
-				<span className={classes.semiBold}>Director:</span> {director}
+				<span className={classes.semiBold}>Director:</span>{" "}
+				{director ? director.name : "N/A"}
 			</Typography>
 		</div>
 	);

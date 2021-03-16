@@ -48,6 +48,7 @@ const App = () => {
 					<Route exact path="/movie/:movie_id" component={MoviePage} />
 					<Route exact path="/person/:person_id" component={PersonPage} />
 					<Route exact path="/movielist" component={MoviesListPage} />
+					<Route exact path="/movielist/:id" component={MoviesListPage} />
 					<Redirect to="/" />
 				</Switch>
 			</Router>

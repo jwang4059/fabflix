@@ -42,20 +42,22 @@ const App = () => {
 		genresStatus === "succeeded"
 	) {
 		content = (
-			<Router>
-				<Switch>
-					<Route exact path="/" component={MoviesListPage} />
-					<Route exact path="/movie/:movie_id" component={MoviePage} />
-					<Route exact path="/person/:person_id" component={PersonPage} />
-					<Route exact path="/movielist" component={MoviesListPage} />
-					<Route exact path="/movielist/:id" component={MoviesListPage} />
-					<Redirect to="/" />
-				</Switch>
-			</Router>
+			<Switch>
+				<Route exact path="/" component={MoviesListPage} />
+				<Route exact path="/movie/:movie_id" component={MoviePage} />
+				<Route exact path="/person/:person_id" component={PersonPage} />
+				<Route exact path="/movielist" component={MoviesListPage} />
+				<Route exact path="/movielist/:id" component={MoviesListPage} />
+				<Redirect to="/" />
+			</Switch>
 		);
 	}
 
-	return <Layout>{content}</Layout>;
+	return (
+		<Router>
+			<Layout>{content}</Layout>
+		</Router>
+	);
 };
 
 export default App;

@@ -20,15 +20,13 @@ const MovieListPage = () => {
 	const error = useSelector((state) => state.movies.error);
 
 	useEffect(() => {
-		if (moviesStatus === "idle") {
-			const payload = {
-				param: id ? `/${id}` : "",
-				query: query ? query : "",
-			};
+		const payload = {
+			param: id ? `/${id}` : "",
+			query: query ? query : "",
+		};
 
-			dispatch(fetchMovieList(payload));
-		}
-	}, [moviesStatus, id, query, dispatch]);
+		dispatch(fetchMovieList(payload));
+	}, [id, query, dispatch]);
 
 	let content = null;
 

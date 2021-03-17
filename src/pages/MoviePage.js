@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import Loading from "../components/Loading";
-import NoMovie from "../components/NoMovie";
+import { NoMovie, NoPersons } from "../components/Placeholder";
 import HorizontalScrollContainer from "../components/HorizonalScrollContainer";
 import { selectImageBaseUrl } from "../features/configuration/configurationSlice";
 import StarCard from "../features/movies/StarCard";
@@ -129,9 +129,10 @@ const MovieInfo = ({ classes, movie }) => {
 	return (
 		<div>
 			<Typography className={classes.title}>
-				{movie.title} <span className={classes.date}>({year})</span>
+				{movie.title}{" "}
+				<span className={classes.date}>{year ? `(${year})` : ""}</span>
 			</Typography>
-			<Typography gutterBottom>{genres}</Typography>
+			<Typography gutterBottom>{genres ? genres : "N/A"}</Typography>
 			<Typography>
 				<span className={classes.semiBold}>Director:</span>{" "}
 				{director ? director.name : "N/A"}
@@ -151,7 +152,7 @@ const Rating = ({ classes, movie }) => {
 				}}
 			/>
 			<Typography className={classes.rating}>
-				{movie.vote_average}/10
+				{movie.vote_average ? movie.vote_average : 0}/10
 			</Typography>
 		</div>
 	);
@@ -167,7 +168,11 @@ const Stars = ({ classes, movie }) => {
 	return (
 		<Box component="section" my={4}>
 			<Typography className={classes.semiBold}>Stars:</Typography>
-			<HorizontalScrollContainer>{starCards}</HorizontalScrollContainer>
+			{starCards && starCards.length > 0 ? (
+				<HorizontalScrollContainer>{starCards}</HorizontalScrollContainer>
+			) : (
+				<NoPersons width="100%" height="16rem" />
+			)}
 		</Box>
 	);
 };

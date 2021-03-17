@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 
 import { selectImageBaseUrl } from "../configuration/configurationSlice";
 import { selectGenreMap } from "../genres/genresSlice";
-import NoMovie from "../../components/NoMovie";
+import { NoMovie } from "../../components/Placeholder";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -112,12 +112,15 @@ const MovieListItem = ({ movie }) => {
 					<CardContent className={classes.padding}>
 						<div className={classes.marginBottom}>
 							<Typography className={classes.title}>
-								{movie.title} <span className={classes.date}>({year})</span>
+								{movie.title}{" "}
+								<span className={classes.date}>{year ? `(${year})` : ""}</span>
 							</Typography>
-							<Typography>{genres}</Typography>
+							<Typography>{genres ? genres : "N/A"}</Typography>
 							<div className={classes.rating}>
 								<StarIcon style={{ color: "#FACC15", marginRight: "8px" }} />
-								<Typography>{movie.vote_average}/10</Typography>
+								<Typography>
+									{movie.vote_average ? movie.vote_average : 0}/10
+								</Typography>
 							</div>
 						</div>
 						<Typography>
@@ -125,7 +128,8 @@ const MovieListItem = ({ movie }) => {
 							{director ? director.name : "N/A"}
 						</Typography>
 						<Typography>
-							<span className={classes.semiBold}>Stars:</span> {stars}
+							<span className={classes.semiBold}>Stars:</span>{" "}
+							{stars ? stars : "N/A"}
 						</Typography>
 					</CardContent>
 					<CardActions className={classes.padding}>

@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 import Loading from "../components/Loading";
-import NoPerson from "../components/NoPerson";
+import { NoPerson, NoMovies } from "../components/Placeholder";
 import HorizontalScrollContainer from "../components/HorizonalScrollContainer";
 import { selectImageBaseUrl } from "../features/configuration/configurationSlice";
 import MovieCard from "../features/movies/MovieCard";
@@ -92,7 +92,11 @@ const Movies = ({ classes, person }) => {
 	return (
 		<Box component="section" my={4}>
 			<Typography className={classes.semiBold}>Movies:</Typography>
-			<HorizontalScrollContainer>{movieCards}</HorizontalScrollContainer>
+			{movieCards && movieCards.length > 0 ? (
+				<HorizontalScrollContainer>{movieCards}</HorizontalScrollContainer>
+			) : (
+				<NoMovies width="100%" height="16rem" />
+			)}
 		</Box>
 	);
 };

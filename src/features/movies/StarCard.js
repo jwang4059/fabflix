@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 import { selectImageBaseUrl } from "../configuration/configurationSlice";
-import NoPerson from "../../components/NoPerson";
+import { NoPerson } from "../../components/Placeholder";
 
 const useStyles = makeStyles((theme) => ({
 	card: {

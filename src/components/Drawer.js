@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import List from "@material-ui/core/List";
@@ -11,6 +12,8 @@ import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import TheatersIcon from "@material-ui/icons/Theaters";
 import MovieIcon from "@material-ui/icons/Movie";
+import StarIcon from "@material-ui/icons/Star";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import WhatshotIcon from "@material-ui/icons/Whatshot";
 import FolderIcon from "@material-ui/icons/Folder";
 import SubdirectoryArrowRightIcon from "@material-ui/icons/SubdirectoryArrowRight";
@@ -34,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
 	nested: {
 		paddingLeft: "2rem",
 	},
+	link: {
+		color: "inherit",
+		textDecoration: "none",
+	},
 }));
 
 const Drawer = ({ openDrawer, setOpenDrawer }) => {
@@ -51,45 +58,47 @@ const Drawer = ({ openDrawer, setOpenDrawer }) => {
 			</div>
 			<Divider />
 			<List>
-				<ListItem button>
-					<ListItemIcon>
-						<MovieIcon />
-					</ListItemIcon>
-					<ListItemText primary={"movies"} />
-				</ListItem>
 				<ListItem button onClick={() => setOpenMovies(!openMovies)}>
 					<ListItemIcon>
-						<TheatersIcon />
+						<MovieIcon />
 					</ListItemIcon>
 					<ListItemText primary="Movies" />
 					{openMovies ? <ExpandLess /> : <ExpandMore />}
 				</ListItem>
 				<Collapse in={openMovies} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
-						<ListItem button className={classes.nested}>
-							<ListItemIcon>
-								<WhatshotIcon />
-							</ListItemIcon>
-							<ListItemText primary="Top Rated" />
-						</ListItem>
-						<ListItem button className={classes.nested}>
-							<ListItemIcon>
-								<WhatshotIcon />
-							</ListItemIcon>
-							<ListItemText primary="Popular" />
-						</ListItem>
-						<ListItem button className={classes.nested}>
-							<ListItemIcon>
-								<WhatshotIcon />
-							</ListItemIcon>
-							<ListItemText primary="Now Playing" />
-						</ListItem>
-						<ListItem button className={classes.nested}>
-							<ListItemIcon>
-								<WhatshotIcon />
-							</ListItemIcon>
-							<ListItemText primary="Upcoming" />
-						</ListItem>
+						<Link to="/movielist/top_rated" className={classes.link}>
+							<ListItem button className={classes.nested}>
+								<ListItemIcon>
+									<StarIcon />
+								</ListItemIcon>
+								<ListItemText primary="Top Rated" />
+							</ListItem>
+						</Link>
+						<Link to="/movielist/popular" className={classes.link}>
+							<ListItem button className={classes.nested}>
+								<ListItemIcon>
+									<WhatshotIcon />
+								</ListItemIcon>
+								<ListItemText primary="Popular" />
+							</ListItem>
+						</Link>
+						<Link to="/movielist/upcoming" className={classes.link}>
+							<ListItem button className={classes.nested}>
+								<ListItemIcon>
+									<TrendingUpIcon />
+								</ListItemIcon>
+								<ListItemText primary="Upcoming" />
+							</ListItem>
+						</Link>
+						<Link to="/movielist/now_playing" className={classes.link}>
+							<ListItem button className={classes.nested}>
+								<ListItemIcon>
+									<TheatersIcon />
+								</ListItemIcon>
+								<ListItemText primary="Now Playing" />
+							</ListItem>
+						</Link>
 					</List>
 				</Collapse>
 				<ListItem button onClick={() => setOpenBrowse(!openBrowse)}>
@@ -102,24 +111,21 @@ const Drawer = ({ openDrawer, setOpenDrawer }) => {
 				<Collapse in={openBrowse} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
 						{genres.map((genre) => (
-							<ListItem button className={classes.nested} key={genre.id}>
-								<ListItemIcon>
-									<SubdirectoryArrowRightIcon />
-								</ListItemIcon>
-								<ListItemText primary={genre.name} />
-							</ListItem>
+							<Link
+								to={`/movielist?with_genres=${genre.id}`}
+								className={classes.link}
+								key={genre.id}
+							>
+								<ListItem button className={classes.nested}>
+									<ListItemIcon>
+										<SubdirectoryArrowRightIcon />
+									</ListItemIcon>
+									<ListItemText primary={genre.name} />
+								</ListItem>
+							</Link>
 						))}
 					</List>
 				</Collapse>
-			</List>
-			<Divider />
-			<List>
-				<ListItem button>
-					<ListItemIcon>
-						<MovieIcon />
-					</ListItemIcon>
-					<ListItemText primary={"logout"} />
-				</ListItem>
 			</List>
 		</div>
 	);

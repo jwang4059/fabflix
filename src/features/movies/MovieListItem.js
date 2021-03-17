@@ -86,6 +86,7 @@ const MovieListItem = ({ movie }) => {
 
 	const stars = movie.credits.cast
 		.filter((person) => person.known_for_department === "Acting")
+		.sort((a, b) => b.popularity - a.popularity)
 		.slice(0, 3)
 		.map((star) => (
 			<Link to={`/person/${star.id}`} key={star.id}>
@@ -99,7 +100,13 @@ const MovieListItem = ({ movie }) => {
 	);
 
 	const genres = movie.genre_ids
-		.map((id) => genreMap[id].name)
+		.map((id) => {
+			return (
+				<Link to={`/movielist?with_genres=${id}`} key={id}>
+					{genreMap[id].name}
+				</Link>
+			);
+		})
 		.reduce((acc, x) => (acc === null ? [x] : [acc, " | ", x]), null);
 
 	return (
@@ -115,7 +122,7 @@ const MovieListItem = ({ movie }) => {
 								{movie.title}{" "}
 								<span className={classes.date}>{year ? `(${year})` : ""}</span>
 							</Typography>
-							<Typography>{genres ? genres : "N/A"}</Typography>
+							<Typography>{genres ? genres : ""}</Typography>
 							<div className={classes.rating}>
 								<StarIcon style={{ color: "#FACC15", marginRight: "8px" }} />
 								<Typography>

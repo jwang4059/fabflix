@@ -8,11 +8,13 @@ import { selectImageBaseUrl } from "../configuration/configurationSlice";
 import { NoMovie } from "../../components/Placeholder";
 
 const useStyles = makeStyles((theme) => ({
+	link: {
+		flex: "0 0 auto",
+	},
 	card: {
 		height: "auto",
 		width: "10rem",
 		marginRight: theme.spacing(1),
-		flex: "0 0 auto",
 	},
 	content: {
 		display: "flex",
@@ -26,10 +28,6 @@ const useStyles = makeStyles((theme) => ({
 		width: "80%",
 		objectFit: "cover",
 		borderRadius: "0.5rem",
-	},
-	link: {
-		height: "100%",
-		width: "100%",
 	},
 	title: {
 		fontSize: "0.875rem",

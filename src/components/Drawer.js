@@ -10,6 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
+import HomeIcon from "@material-ui/icons/Home";
 import TheatersIcon from "@material-ui/icons/Theaters";
 import MovieIcon from "@material-ui/icons/Movie";
 import StarIcon from "@material-ui/icons/Star";
@@ -58,6 +59,14 @@ const Drawer = ({ openDrawer, setOpenDrawer }) => {
 			</div>
 			<Divider />
 			<List>
+				<Link to="/" className={classes.link}>
+					<ListItem button>
+						<ListItemIcon>
+							<HomeIcon />
+						</ListItemIcon>
+						<ListItemText primary="Home" />
+					</ListItem>
+				</Link>
 				<ListItem button onClick={() => setOpenMovies(!openMovies)}>
 					<ListItemIcon>
 						<MovieIcon />

@@ -8,11 +8,13 @@ import { selectImageBaseUrl } from "../configuration/configurationSlice";
 import { NoPerson } from "../../components/Placeholder";
 
 const useStyles = makeStyles((theme) => ({
+	link: {
+		flex: "0 0 auto",
+	},
 	card: {
 		height: "auto",
 		width: "10rem",
 		marginRight: theme.spacing(1),
-		flex: "0 0 auto",
 	},
 	content: {
 		display: "flex",
@@ -49,7 +51,7 @@ const StarCard = ({ star }) => {
 	}
 
 	return (
-		<Link to={`/person/${star.id}`}>
+		<Link to={`/person/${star.id}`} className={classes.link}>
 			<div className={classes.card}>
 				<div className={classes.content}>
 					{profile}

@@ -121,7 +121,17 @@ const Poster = ({ classes, movie, imageBaseUrl }) => {
 
 const MovieInfo = ({ classes, movie }) => {
 	const year = movie.release_date.split("-")[0];
-	const genres = movie.genres.map((genre) => genre.name).join(" | ");
+
+	const genres = movie.genres
+		.map((genre) => {
+			return (
+				<Link to={`/movielist?with_genres=${genre.id}`} key={genre.id}>
+					{genre.name}
+				</Link>
+			);
+		})
+		.reduce((acc, x) => (acc === null ? [x] : [acc, " | ", x]), null);
+
 	const director = movie.credits.crew.find(
 		(person) => person.job === "Director"
 	);

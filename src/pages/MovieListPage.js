@@ -4,6 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import Loading from "../components/Loading";
 import MoviesList from "../features/movies/MoviesList";
+import Pagination from "../components/Pagination";
 import {
 	selectAllMovies,
 	fetchMovieList,
@@ -11,7 +12,7 @@ import {
 
 const MovieListPage = () => {
 	const { id } = useParams();
-	const query = useLocation().search;
+	const search = useLocation().search;
 
 	const dispatch = useDispatch();
 	const movies = useSelector(selectAllMovies);
@@ -22,18 +23,23 @@ const MovieListPage = () => {
 	useEffect(() => {
 		const payload = {
 			param: id ? `/${id}` : "",
-			query: query ? query : "",
+			search: search ? search : "",
 		};
 
 		dispatch(fetchMovieList(payload));
-	}, [id, query, dispatch]);
+	}, [id, search, dispatch]);
 
 	let content = null;
 
 	if (moviesStatus === "loading") {
 		content = <Loading />;
 	} else if (moviesStatus === "succeeded") {
-		content = <MoviesList movies={movies} />;
+		content = (
+			<>
+				<MoviesList movies={movies} />
+				<Pagination />
+			</>
+		);
 	} else if (moviesStatus === "failed") {
 		content = <div>{error}</div>;
 	}

@@ -9,8 +9,9 @@ const moviesAdapter = createEntityAdapter();
 const initialState = moviesAdapter.getInitialState({
 	status: "idle",
 	error: null,
-	page: 1,
-	total_pages: 1,
+	url: "",
+	page: 0,
+	total_pages: 0,
 	total_results: 0,
 });
 
@@ -28,7 +29,11 @@ export const fetchMovieList = createAsyncThunk(
 const moviesSlice = createSlice({
 	name: "movies",
 	initialState,
-	reducers: {},
+	reducers: {
+		updateUrl(state, action) {
+			state.url = action.payload;
+		},
+	},
 	extraReducers: {
 		[fetchMovieList.pending]: (state) => {
 			state.status = "loading";
@@ -48,6 +53,8 @@ const moviesSlice = createSlice({
 });
 
 export default moviesSlice.reducer;
+
+export const { updateUrl } = moviesSlice.actions;
 
 export const { selectAll: selectAllMovies } = moviesAdapter.getSelectors(
 	(state) => state.movies

@@ -13,10 +13,11 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
+		width: "100%",
 		padding: 0,
-		margin: "1rem 0",
+		margin: 0,
 		[theme.breakpoints.up("sm")]: {
-			justifyContent: "flex-end",
+			width: "auto",
 		},
 	},
 	formControl: {

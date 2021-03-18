@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import List from "@material-ui/core/List";
@@ -38,17 +38,18 @@ const useStyles = makeStyles((theme) => ({
 	nested: {
 		paddingLeft: "2rem",
 	},
-	link: {
-		color: "inherit",
-		textDecoration: "none",
-	},
 }));
 
 const Drawer = ({ openDrawer, setOpenDrawer }) => {
 	const classes = useStyles();
+	const history = useHistory();
 	const genres = useSelector(selectAllGenres);
 	const [openMovies, setOpenMovies] = useState(false);
 	const [openBrowse, setOpenBrowse] = useState(false);
+
+	const handleButtonClicked = (url) => {
+		history.push(url);
+	};
 
 	const MenuList = () => (
 		<div className={classes.list} role="presentation">
@@ -59,14 +60,12 @@ const Drawer = ({ openDrawer, setOpenDrawer }) => {
 			</div>
 			<Divider />
 			<List>
-				<Link to="/" className={classes.link}>
-					<ListItem button>
-						<ListItemIcon>
-							<HomeIcon />
-						</ListItemIcon>
-						<ListItemText primary="Home" />
-					</ListItem>
-				</Link>
+				<ListItem button onClick={() => handleButtonClicked("/")}>
+					<ListItemIcon>
+						<HomeIcon />
+					</ListItemIcon>
+					<ListItemText primary="Home" />
+				</ListItem>
 				<ListItem button onClick={() => setOpenMovies(!openMovies)}>
 					<ListItemIcon>
 						<MovieIcon />
@@ -76,38 +75,46 @@ const Drawer = ({ openDrawer, setOpenDrawer }) => {
 				</ListItem>
 				<Collapse in={openMovies} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
-						<Link to="/movielist/top_rated" className={classes.link}>
-							<ListItem button className={classes.nested}>
-								<ListItemIcon>
-									<StarIcon />
-								</ListItemIcon>
-								<ListItemText primary="Top Rated" />
-							</ListItem>
-						</Link>
-						<Link to="/movielist/popular" className={classes.link}>
-							<ListItem button className={classes.nested}>
-								<ListItemIcon>
-									<WhatshotIcon />
-								</ListItemIcon>
-								<ListItemText primary="Popular" />
-							</ListItem>
-						</Link>
-						<Link to="/movielist/upcoming" className={classes.link}>
-							<ListItem button className={classes.nested}>
-								<ListItemIcon>
-									<TrendingUpIcon />
-								</ListItemIcon>
-								<ListItemText primary="Upcoming" />
-							</ListItem>
-						</Link>
-						<Link to="/movielist/now_playing" className={classes.link}>
-							<ListItem button className={classes.nested}>
-								<ListItemIcon>
-									<TheatersIcon />
-								</ListItemIcon>
-								<ListItemText primary="Now Playing" />
-							</ListItem>
-						</Link>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={() => handleButtonClicked("/movielist/top_rated")}
+						>
+							<ListItemIcon>
+								<StarIcon />
+							</ListItemIcon>
+							<ListItemText primary="Top Rated" />
+						</ListItem>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={() => handleButtonClicked("/movielist/popular")}
+						>
+							<ListItemIcon>
+								<WhatshotIcon />
+							</ListItemIcon>
+							<ListItemText primary="Popular" />
+						</ListItem>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={() => handleButtonClicked("/movielist/upcoming")}
+						>
+							<ListItemIcon>
+								<TrendingUpIcon />
+							</ListItemIcon>
+							<ListItemText primary="Upcoming" />
+						</ListItem>
+						<ListItem
+							button
+							className={classes.nested}
+							onClick={() => handleButtonClicked("/movielist/now_playing")}
+						>
+							<ListItemIcon>
+								<TheatersIcon />
+							</ListItemIcon>
+							<ListItemText primary="Now Playing" />
+						</ListItem>
 					</List>
 				</Collapse>
 				<ListItem button onClick={() => setOpenBrowse(!openBrowse)}>
@@ -120,18 +127,19 @@ const Drawer = ({ openDrawer, setOpenDrawer }) => {
 				<Collapse in={openBrowse} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
 						{genres.map((genre) => (
-							<Link
-								to={`/movielist?with_genres=${genre.id}`}
-								className={classes.link}
+							<ListItem
+								button
+								className={classes.nested}
 								key={genre.id}
+								onClick={() =>
+									handleButtonClicked(`/movielist?with_genres=${genre.id}`)
+								}
 							>
-								<ListItem button className={classes.nested}>
-									<ListItemIcon>
-										<SubdirectoryArrowRightIcon />
-									</ListItemIcon>
-									<ListItemText primary={genre.name} />
-								</ListItem>
-							</Link>
+								<ListItemIcon>
+									<SubdirectoryArrowRightIcon />
+								</ListItemIcon>
+								<ListItemText primary={genre.name} />
+							</ListItem>
 						))}
 					</List>
 				</Collapse>

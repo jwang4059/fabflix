@@ -46,7 +46,7 @@ const Pagination = () => {
 	return (
 		<nav className={classes.nav}>
 			<ul className={classes.ul}>
-				<li className={clsx(classes.li, { [classes.hidden]: page - 1 === 0 })}>
+				<li className={clsx(classes.li, { [classes.hidden]: page - 1 < 1 })}>
 					<Typography className={classes.text}>
 						<Link to={prev_url} className={classes.link}>
 							Prev
@@ -62,7 +62,7 @@ const Pagination = () => {
 				</li>
 				<li
 					className={clsx(classes.li, {
-						[classes.hidden]: page + 1 === total_pages,
+						[classes.hidden]: page + 1 > total_pages,
 					})}
 				>
 					<Typography className={classes.text}>

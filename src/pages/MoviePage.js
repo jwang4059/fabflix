@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -187,10 +187,12 @@ const Stars = ({ classes, movie }) => {
 	);
 };
 
-const MoviePage = ({ match }) => {
-	const { movie_id } = match.params;
-
+const MoviePage = () => {
 	const classes = useStyles();
+	const { movie_id } = useParams();
+	const history = useHistory();
+
+	const movielistUrl = useSelector((state) => state.movies.url);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
 	const [movie, setMovie] = useState(null);
 
@@ -227,11 +229,14 @@ const MoviePage = ({ match }) => {
 			<Stars classes={classes} movie={movie} />
 
 			<Box display="flex" justifyContent="center" alignItems="center">
-				<Link to="/movielist">
-					<Button variant="contained" color="primary" size="large">
-						Back to movie list
-					</Button>
-				</Link>
+				<Button
+					variant="contained"
+					color="primary"
+					size="large"
+					onClick={() => history.push(movielistUrl)}
+				>
+					Back to movie list
+				</Button>
 			</Box>
 		</>
 	);

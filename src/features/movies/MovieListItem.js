@@ -82,7 +82,7 @@ const MovieListItem = ({ movie }) => {
 		poster = <img className={classes.poster} src={posterUrl} alt="" />;
 	}
 
-	const year = movie.release_date.split("-")[0];
+	const year = movie.release_date ? movie.release_date.split("-")[0] : "";
 
 	let stars, director;
 

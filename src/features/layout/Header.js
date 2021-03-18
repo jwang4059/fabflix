@@ -10,9 +10,6 @@ import SearchBar from "../../components/SearchBar";
 import Drawer from "../../components/Drawer";
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-		display: "flex",
-	},
 	menuButton: {
 		marginRight: "1rem",
 	},
@@ -32,26 +29,24 @@ const Header = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
 
 	return (
-		<div className={classes.root}>
-			<AppBar id="header" position="static">
-				<Toolbar>
-					<IconButton
-						edge="start"
-						className={classes.menuButton}
-						color="inherit"
-						aria-label="menu"
-						onClick={() => setOpenDrawer(true)}
-					>
-						<MenuIcon />
-					</IconButton>
-					<Link to="/" className={classes.title}>
-						Fabflix
-					</Link>
-					<SearchBar />
-				</Toolbar>
-			</AppBar>
+		<AppBar id="header" position="static">
+			<Toolbar>
+				<IconButton
+					edge="start"
+					className={classes.menuButton}
+					color="inherit"
+					aria-label="menu"
+					onClick={() => setOpenDrawer(true)}
+				>
+					<MenuIcon />
+				</IconButton>
+				<Link to="/" className={classes.title}>
+					Fabflix
+				</Link>
+				<SearchBar />
+			</Toolbar>
 			<Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
-		</div>
+		</AppBar>
 	);
 };
 

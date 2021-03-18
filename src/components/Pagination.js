@@ -10,6 +10,8 @@ const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
+		padding: 0,
+		margin: "2rem",
 	},
 	li: {
 		listStyle: "none",
@@ -32,9 +34,6 @@ const Pagination = () => {
 	const query = new URLSearchParams(location.search);
 	const page = useSelector((state) => state.movies.page);
 	const total_pages = useSelector((state) => state.movies.total_pages);
-
-	console.log(location.search);
-	console.log(query);
 
 	const getPageUrl = (pageNum) => {
 		query.set("page", pageNum);

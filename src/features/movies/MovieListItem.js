@@ -84,20 +84,25 @@ const MovieListItem = ({ movie }) => {
 
 	const year = movie.release_date.split("-")[0];
 
-	const stars = movie.credits.cast
-		.filter((person) => person.known_for_department === "Acting")
-		.sort((a, b) => b.popularity - a.popularity)
-		.slice(0, 3)
-		.map((star) => (
-			<Link to={`/person/${star.id}`} key={star.id}>
-				{star.name}
-			</Link>
-		))
-		.reduce((acc, x) => (acc === null ? [x] : [acc, ", ", x]), null);
+	let stars, director;
 
-	const director = movie.credits.crew.find(
-		(person) => person.job === "Director"
-	);
+	if (!movie.credits) {
+		stars = "N/A";
+		director = "N/A";
+	} else {
+		stars = movie.credits.cast
+			.filter((person) => person.known_for_department === "Acting")
+			.sort((a, b) => b.popularity - a.popularity)
+			.slice(0, 3)
+			.map((star) => (
+				<Link to={`/person/${star.id}`} key={star.id}>
+					{star.name}
+				</Link>
+			))
+			.reduce((acc, x) => (acc === null ? [x] : [acc, ", ", x]), null);
+
+		director = movie.credits.crew.find((person) => person.job === "Director");
+	}
 
 	const genres = movie.genre_ids
 		.map((id) => {

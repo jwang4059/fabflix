@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import MoviesList from "../features/movies/MoviesList";
 import Pagination from "../components/Pagination";
+import SortMenu from "../components/SortMenu";
 import {
 	selectAllMovies,
 	fetchMovieList,
@@ -36,6 +37,7 @@ const MovieListPage = () => {
 	} else if (moviesStatus === "succeeded") {
 		content = (
 			<>
+				<SortMenu />
 				<MoviesList movies={movies} />
 				<Pagination />
 			</>

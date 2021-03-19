@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -101,8 +101,10 @@ const Movies = ({ classes, person }) => {
 	);
 };
 
-const PersonPage = ({ match }) => {
-	const { person_id } = match.params;
+const PersonPage = () => {
+	const { person_id } = useParams();
+	const history = useHistory();
+	const movielistUrl = useSelector((state) => state.movies.url);
 
 	const classes = useStyles();
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
@@ -132,7 +134,9 @@ const PersonPage = ({ match }) => {
 					imageBaseUrl={imageBaseUrl}
 				/>
 				<div className={classes.textContainer}>
-					<Typography className={classes.name}>{person.name}</Typography>
+					<Typography className={classes.name} component="h1">
+						{person.name}
+					</Typography>
 					<Typography>
 						<span className={classes.semiBold}>Birthday:</span>{" "}
 						{person.birthday ? person.birthday : "N/A"}
@@ -146,11 +150,14 @@ const PersonPage = ({ match }) => {
 			<Movies classes={classes} person={person} />
 
 			<Box display="flex" justifyContent="center" alignItems="center">
-				<Link to="/movielist">
-					<Button variant="contained" color="primary" size="large">
-						Back to movie list
-					</Button>
-				</Link>
+				<Button
+					variant="contained"
+					color="primary"
+					size="large"
+					onClick={() => history.push(movielistUrl)}
+				>
+					Back to movie list
+				</Button>
 			</Box>
 		</>
 	);

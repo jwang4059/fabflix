@@ -67,6 +67,10 @@ const useStyles = makeStyles((theme) => ({
 	marginBottom: {
 		marginBottom: "1rem",
 	},
+	link: {
+		color: "inherit",
+		textDecoration: "none",
+	},
 }));
 
 const MovieListItem = ({ movie }) => {
@@ -118,13 +122,17 @@ const MovieListItem = ({ movie }) => {
 		<Card className={classes.card}>
 			<div className={classes.content}>
 				<div className={classes.imageContainer}>
-					<CardMedia>{poster}</CardMedia>
+					<CardMedia>
+						<Link to={`/movie/${movie.id}`}>{poster}</Link>
+					</CardMedia>
 				</div>
 				<div>
 					<CardContent className={classes.padding}>
 						<div className={classes.marginBottom}>
-							<Typography className={classes.title}>
-								{movie.title}{" "}
+							<Typography className={classes.title} component="h2">
+								<Link to={`/movie/${movie.id}`} className={classes.link}>
+									{movie.title}
+								</Link>{" "}
 								<span className={classes.date}>{year ? `(${year})` : ""}</span>
 							</Typography>
 							<Typography>{genres ? genres : ""}</Typography>

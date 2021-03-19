@@ -9,6 +9,7 @@ import {
 
 import Layout from "./features/layout/Layout";
 import Loading from "./components/Loading";
+import LandingPage from "./pages/LandingPage";
 import MoviesListPage from "./pages/MovieListPage";
 import MoviePage from "./pages/MoviePage";
 import PersonPage from "./pages/PersonPage";
@@ -43,7 +44,7 @@ const App = () => {
 	) {
 		content = (
 			<Switch>
-				<Route exact path="/" component={MoviesListPage} />
+				<Route exact path="/" component={LandingPage} />
 				<Route exact path="/movie/:movie_id" component={MoviePage} />
 				<Route exact path="/person/:person_id" component={PersonPage} />
 				<Route exact path="/movielist" component={MoviesListPage} />

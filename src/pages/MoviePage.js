@@ -138,7 +138,7 @@ const MovieInfo = ({ classes, movie }) => {
 
 	return (
 		<div>
-			<Typography className={classes.title}>
+			<Typography className={classes.title} component="h1">
 				{movie.title}{" "}
 				<span className={classes.date}>{year ? `(${year})` : ""}</span>
 			</Typography>

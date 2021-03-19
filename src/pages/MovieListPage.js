@@ -91,7 +91,9 @@ const MovieListPage = () => {
 		content = (
 			<>
 				<div className={classes.container}>
-					<Typography className={classes.title}>{title}</Typography>
+					<Typography className={classes.title} component="h1">
+						{title}
+					</Typography>
 					<SortMenu />
 				</div>
 				<MoviesList movies={movies} />

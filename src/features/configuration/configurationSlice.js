@@ -9,7 +9,9 @@ const initialState = {
 export const fetchConfiguration = createAsyncThunk(
 	"configuration/fetchConfiguration",
 	async () => {
-		const response = await fetch("http://localhost:3001/configuration");
+		const response = await fetch(
+			`https://fabflix-api.herokuapp.com/configuration`
+		);
 		return response.json();
 	}
 );
@@ -28,6 +30,7 @@ const configurationSlice = createSlice({
 		},
 		[fetchConfiguration.rejected]: (state, action) => {
 			state.error = action.error.message;
+			console.log(action.error.message);
 			state.status = "failed";
 		},
 	},

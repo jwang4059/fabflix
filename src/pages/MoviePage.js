@@ -198,7 +198,9 @@ const MoviePage = () => {
 
 	useEffect(() => {
 		const fetchMovie = async () => {
-			const response = await fetch(`http://localhost:3001/movie/${movie_id}`);
+			const response = await fetch(
+				`https://fabflix-api.herokuapp.com/movie/${movie_id}`
+			);
 			const data = await response.json();
 
 			setMovie(data);

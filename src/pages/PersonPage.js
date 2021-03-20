@@ -112,7 +112,9 @@ const PersonPage = () => {
 
 	useEffect(() => {
 		const fetchPerson = async () => {
-			const response = await fetch(`http://localhost:3001/person/${person_id}`);
+			const response = await fetch(
+				`https://fabflix-api.herokuapp.com/person/${person_id}`
+			);
 			const data = await response.json();
 
 			setPerson(data);

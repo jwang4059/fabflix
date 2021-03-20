@@ -20,7 +20,7 @@ export const fetchMovieList = createAsyncThunk(
 	async (payload) => {
 		const { param, search } = payload;
 		const response = await fetch(
-			`http://localhost:3001/movielist${param}${search}`
+			`https://fabflix-api.herokuapp.com/movielist${param}${search}`
 		);
 		return response.json();
 	}

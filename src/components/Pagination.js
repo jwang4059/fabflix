@@ -55,7 +55,7 @@ const Pagination = () => {
 				</li>
 				<li className={classes.li}>
 					<Typography className={classes.text}>
-						<a href="#header" className={classes.link}>
+						<a href="#top" className={classes.link}>
 							{page}
 						</a>
 					</Typography>

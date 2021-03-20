@@ -90,7 +90,7 @@ const MovieListPage = () => {
 	} else if (moviesStatus === "succeeded") {
 		content = (
 			<>
-				<div className={classes.container}>
+				<div id="top" className={classes.container}>
 					<Typography className={classes.title} component="h1">
 						{title}
 					</Typography>

@@ -12,7 +12,7 @@ const initialState = genresAdapter.getInitialState({
 });
 
 export const fetchGenres = createAsyncThunk("genres/fetchGenres", async () => {
-	const response = await fetch("http://localhost:3001/genrelist");
+	const response = await fetch(`https://fabflix-api.herokuapp.com/genrelist`);
 	return response.json();
 });
 

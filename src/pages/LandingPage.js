@@ -41,14 +41,18 @@ const LandingPage = () => {
 
 	useEffect(() => {
 		const fetchRandomMovie = async () => {
-			const response = await fetch(`http://localhost:3001/random/now_playing`);
+			const response = await fetch(
+				`https://fabflix-api.herokuapp.com/random/now_playing`
+			);
 			const data = await response.json();
 
 			setRandomMovie(data);
 		};
 
 		const fetchPopularMovies = async () => {
-			const response = await fetch(`http://localhost:3001/movielist/popular`);
+			const response = await fetch(
+				`https://fabflix-api.herokuapp.com/movielist/popular`
+			);
 			const data = await response.json();
 
 			setPopularMovies(data);

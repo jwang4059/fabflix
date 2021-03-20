@@ -29,7 +29,7 @@ const Header = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
 
 	return (
-		<AppBar id="header" position="static">
+		<AppBar id="header" position="sticky">
 			<Toolbar>
 				<IconButton
 					edge="start"

@@ -9,7 +9,7 @@ const moviesAdapter = createEntityAdapter();
 const initialState = moviesAdapter.getInitialState({
 	status: "idle",
 	error: null,
-	url: "",
+	url: "/",
 	page: 0,
 	total_pages: 0,
 	total_results: 0,

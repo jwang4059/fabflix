@@ -10,17 +10,34 @@ import SearchBar from "../../components/SearchBar";
 import Drawer from "../../components/Drawer";
 
 const useStyles = makeStyles((theme) => ({
-	menuButton: {
-		marginRight: "1rem",
+	navigation: {
+		display: "flex",
+		justifyContent: "flex-start",
+		alignItems: "center",
+		minWidth: "16%",
 	},
 	title: {
 		color: "inherit",
 		textDecoration: "none",
 		fontSize: "1.25rem",
+		lineHeight: "1.75rem",
 		display: "none",
 		[theme.breakpoints.up("sm")]: {
 			display: "block",
 		},
+	},
+	profile: {
+		display: "flex",
+		justifyContent: "flex-end",
+		alignItems: "center",
+		minWidth: "16%",
+	},
+	login: {
+		color: "inherit",
+		textDecoration: "none",
+		fontSize: "1rem",
+		lineHeight: "1.5rem",
+		textTransform: "uppercase",
 	},
 }));
 
@@ -31,19 +48,25 @@ const Header = () => {
 	return (
 		<AppBar id="header" position="sticky">
 			<Toolbar>
-				<IconButton
-					edge="start"
-					className={classes.menuButton}
-					color="inherit"
-					aria-label="menu"
-					onClick={() => setOpenDrawer(true)}
-				>
-					<MenuIcon />
-				</IconButton>
-				<Link to="/" className={classes.title}>
-					Fabflix
-				</Link>
+				<div className={classes.navigation}>
+					<IconButton
+						edge="start"
+						color="inherit"
+						aria-label="menu"
+						onClick={() => setOpenDrawer(true)}
+					>
+						<MenuIcon />
+					</IconButton>
+					<Link to="/" className={classes.title}>
+						Fabflix
+					</Link>
+				</div>
 				<SearchBar />
+				<div className={classes.profile}>
+					<Link to="/signin" className={classes.login}>
+						Login
+					</Link>
+				</div>
 			</Toolbar>
 			<Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
 		</AppBar>

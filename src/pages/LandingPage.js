@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
 import Loading from "../components/Loading";
@@ -67,10 +68,10 @@ const LandingPage = () => {
 	}
 
 	return (
-		<>
+		<Container component="main" maxWidth="md">
 			<MovieBanner movie={randomMovie} />
 			<Movies classes={classes} movies={popularMovies} />
-		</>
+		</Container>
 	);
 };
 

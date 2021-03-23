@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -24,9 +23,7 @@ const Layout = ({ children }) => {
 		<div className={classes.root}>
 			<div className={classes.content}>
 				<Header />
-				<Container component="main" maxWidth="md">
-					{children}
-				</Container>
+				{children}
 			</div>
 			<Footer />
 		</div>

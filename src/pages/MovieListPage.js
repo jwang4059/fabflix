@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
 import Loading from "../components/Loading";
@@ -89,7 +90,7 @@ const MovieListPage = () => {
 		content = <Loading />;
 	} else if (moviesStatus === "succeeded") {
 		content = (
-			<>
+			<Container component="main" maxWidth="md">
 				<div id="top" className={classes.container}>
 					<Typography className={classes.title} component="h1">
 						{title}
@@ -98,7 +99,7 @@ const MovieListPage = () => {
 				</div>
 				<MoviesList movies={movies} />
 				<Pagination />
-			</>
+			</Container>
 		);
 	} else if (moviesStatus === "failed") {
 		content = <div>{error}</div>;

@@ -30,7 +30,6 @@ const configurationSlice = createSlice({
 		},
 		[fetchConfiguration.rejected]: (state, action) => {
 			state.error = action.error.message;
-			console.log(action.error.message);
 			state.status = "failed";
 		},
 	},

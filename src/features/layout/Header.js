@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -43,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
 	const classes = useStyles();
+	const user = useSelector((state) => state.authentification.user);
 	const [openDrawer, setOpenDrawer] = useState(false);
 
 	return (
@@ -63,9 +65,15 @@ const Header = () => {
 				</div>
 				<SearchBar />
 				<div className={classes.profile}>
-					<Link to="/signin" className={classes.login}>
-						Login
-					</Link>
+					{!user ? (
+						<Link to="/signin" className={classes.login}>
+							Login
+						</Link>
+					) : (
+						<Link to="/" className={classes.login}>
+							Logout
+						</Link>
+					)}
 				</div>
 			</Toolbar>
 			<Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />

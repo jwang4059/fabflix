@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
@@ -32,7 +32,10 @@ const useStyles = makeStyles((theme) => ({
 
 const SignInPage = () => {
 	const classes = useStyles();
+	const history = useHistory();
 	const dispatch = useDispatch();
+	const authStatus = useSelector((state) => state.authentification.status);
+	const authError = useSelector((state) => state.authentification.error);
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -52,9 +55,12 @@ const SignInPage = () => {
 		}
 	};
 
-	const handleSubmitLogin = (event) => {
+	const handleSubmitLogin = async (event) => {
 		event.preventDefault();
-		dispatch(signin({ email, password }));
+		const response = await dispatch(signin({ email, password }));
+		if (response?.payload?.status === "succeeded") {
+			history.push("/");
+		}
 	};
 
 	return (
@@ -64,6 +70,7 @@ const SignInPage = () => {
 					Fabflix Login
 				</Typography>
 				<form className={classes.form}>
+					<Typography color="error">{authError}</Typography>
 					<TextField
 						variant="outlined"
 						id="email"
@@ -71,6 +78,7 @@ const SignInPage = () => {
 						type="email"
 						label="Email Address"
 						value={email}
+						error={authStatus === "failed"}
 						autoComplete="email"
 						autoFocus
 						margin="normal"
@@ -86,6 +94,7 @@ const SignInPage = () => {
 						type="password"
 						label="Password"
 						value={password}
+						error={authStatus === "failed"}
 						margin="normal"
 						fullWidth
 						required

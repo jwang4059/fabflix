@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
@@ -24,22 +24,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const textfieldState = {
+	value: "",
+	valid: true,
+	validationMessage: "",
+};
+
 const SignUpPage = () => {
 	const classes = useStyles();
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const history = useHistory();
+	const [nameState, setNameState] = useState(textfieldState);
+	const [emailState, setEmailState] = useState(textfieldState);
+	const [passwordState, setPasswordState] = useState(textfieldState);
+	const [showValidation, setShowValidation] = useState(false);
+	const [submissionError, setSubmissionError] = useState(null);
 
 	const handleNameChange = (event) => {
-		setName(event.target.value);
+		const { value, validity, validationMessage } = event.target;
+		setNameState({ value, valid: validity.valid, validationMessage });
 	};
 
 	const handleEmailChange = (event) => {
-		setEmail(event.target.value);
+		const { value, validity, validationMessage } = event.target;
+		setEmailState({ value, valid: validity.valid, validationMessage });
 	};
 
 	const handlePasswordChange = (event) => {
-		setPassword(event.target.value);
+		const { value, validity, validationMessage } = event.target;
+		setPasswordState({ value, valid: validity.valid, validationMessage });
 	};
 
 	const handleEnterKey = (event) => {
@@ -51,17 +63,39 @@ const SignUpPage = () => {
 
 	const handleSubmitForm = async (event) => {
 		event.preventDefault();
-		try {
-			const response = await fetch("https://fabflix-api.herokuapp.com/signup", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ name, email, password }),
-			});
+		if (!showValidation) setShowValidation(true);
 
-			const data = await response.json();
-			console.log(data);
-		} catch (e) {
-			console.log(e);
+		const canSubmit = [
+			nameState.valid,
+			emailState.valid,
+			passwordState.valid,
+		].every(Boolean);
+
+		if (canSubmit) {
+			try {
+				const response = await fetch(
+					"https://fabflix-api.herokuapp.com/signup",
+					{
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							name: nameState.value,
+							email: emailState.value,
+							password: passwordState.value,
+						}),
+					}
+				);
+
+				const data = await response.json();
+
+				if (data.name === "error") {
+					setSubmissionError(data.detail);
+				} else {
+					history.push("/signin");
+				}
+			} catch (e) {
+				setSubmissionError(e);
+			}
 		}
 	};
 
@@ -72,6 +106,7 @@ const SignUpPage = () => {
 					Fabflix Registration
 				</Typography>
 				<form className={classes.form}>
+					<Typography color="error">{submissionError}</Typography>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<TextField
@@ -79,7 +114,9 @@ const SignUpPage = () => {
 								id="name"
 								name="name"
 								label="Name"
-								value={name}
+								value={nameState.value}
+								error={showValidation ? !nameState.valid : false}
+								helperText={showValidation ? nameState.validationMessage : ""}
 								autoComplete="name"
 								autoFocus
 								fullWidth
@@ -95,7 +132,9 @@ const SignUpPage = () => {
 								name="email"
 								type="email"
 								label="Email Address"
-								value={email}
+								value={emailState.value}
+								error={showValidation ? !emailState.valid : false}
+								helperText={showValidation ? emailState.validationMessage : ""}
 								autoComplete="email"
 								fullWidth
 								required
@@ -110,7 +149,12 @@ const SignUpPage = () => {
 								name="password"
 								type="password"
 								label="Password"
-								value={password}
+								value={passwordState.value}
+								error={showValidation ? !passwordState.valid : false}
+								helperText={
+									showValidation ? passwordState.validationMessage : ""
+								}
+								inputProps={{ minLength: 8 }}
 								autoComplete="current-password"
 								fullWidth
 								required

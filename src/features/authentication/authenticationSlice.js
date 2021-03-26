@@ -15,7 +15,9 @@ export const signin = createAsyncThunk(
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(payload),
 		});
-		return response.json();
+
+		const data = await response.json();
+		return data;
 	}
 );
 
@@ -34,10 +36,15 @@ const authentificationSlice = createSlice({
 			state.status = "loading";
 		},
 		[signin.fulfilled]: (state, action) => {
-			//Check the payload
-			state.user = action.payload;
-			state.isAuthenticated = true;
-			state.status = "succeeded";
+			if (action.payload.status === "succeeded") {
+				state.user = action.payload.user;
+				state.isAuthenticated = true;
+				state.error = null;
+				state.status = "succeeded";
+			} else {
+				state.error = action.payload.message;
+				state.status = "failed";
+			}
 		},
 		[signin.rejected]: (state, action) => {
 			state.error = action.error.message;

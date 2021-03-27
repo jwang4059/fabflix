@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
 
 import SearchBar from "../../components/SearchBar";
 import Drawer from "../../components/Drawer";
+import { signout } from "../authentication/authenticationSlice";
 
 const useStyles = makeStyles((theme) => ({
 	navigation: {
@@ -40,12 +46,112 @@ const useStyles = makeStyles((theme) => ({
 		lineHeight: "1.5rem",
 		textTransform: "uppercase",
 	},
+	sectionDesktop: {
+		display: "none",
+		[theme.breakpoints.up("md")]: {
+			display: "flex",
+		},
+	},
+	sectionMobile: {
+		display: "flex",
+		[theme.breakpoints.up("md")]: {
+			display: "none",
+		},
+	},
 }));
 
 const Header = () => {
 	const classes = useStyles();
-	const user = useSelector((state) => state.authentification.user);
+	const history = useHistory();
+	const dispatch = useDispatch();
+	const auth = useSelector((state) => state.authentification.isAuthenticated);
 	const [openDrawer, setOpenDrawer] = useState(false);
+	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [mobileAnchorEl, setMobileAnchorEl] = React.useState(null);
+
+	const open = Boolean(anchorEl);
+	const mobileOpen = Boolean(mobileAnchorEl);
+
+	const handleMenuOpen = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleMenuClose = () => {
+		setAnchorEl(null);
+	};
+
+	const handleMobileMenuOpen = (event) => {
+		setMobileAnchorEl(event.currentTarget);
+	};
+
+	const handleMobileMenuClose = () => {
+		setMobileAnchorEl(null);
+	};
+
+	const handleSigninButton = () => {
+		handleMenuClose();
+		handleMobileMenuClose();
+		history.push("/signin");
+	};
+
+	const handleSignoutButton = () => {
+		dispatch(signout());
+		handleMenuClose();
+		handleMobileMenuClose();
+		history.push("/");
+	};
+
+	const renderMenu = (
+		<Menu
+			id="menu-desktop"
+			anchorEl={anchorEl}
+			anchorOrigin={{
+				vertical: "top",
+				horizontal: "right",
+			}}
+			keepMounted
+			transformOrigin={{
+				vertical: "top",
+				horizontal: "right",
+			}}
+			open={open}
+			onClose={handleMenuClose}
+		>
+			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+			<MenuItem onClick={handleSignoutButton}>Logout</MenuItem>
+		</Menu>
+	);
+
+	const renderMobileMenu = (
+		<Menu
+			id="menu-mobile"
+			anchorEl={mobileAnchorEl}
+			anchorOrigin={{
+				vertical: "top",
+				horizontal: "right",
+			}}
+			keepMounted
+			transformOrigin={{
+				vertical: "top",
+				horizontal: "right",
+			}}
+			open={mobileOpen}
+			onClose={handleMobileMenuClose}
+		>
+			{!auth ? (
+				<MenuItem onClick={handleSigninButton}>Login</MenuItem>
+			) : (
+				[
+					<MenuItem key="profile" onClick={handleMobileMenuClose}>
+						Profile
+					</MenuItem>,
+					<MenuItem key="logout" onClick={handleSignoutButton}>
+						Logout
+					</MenuItem>,
+				]
+			)}
+		</Menu>
+	);
 
 	return (
 		<AppBar id="header" position="sticky">
@@ -65,18 +171,39 @@ const Header = () => {
 				</div>
 				<SearchBar />
 				<div className={classes.profile}>
-					{!user ? (
-						<Link to="/signin" className={classes.login}>
-							Login
-						</Link>
-					) : (
-						<Link to="/" className={classes.login}>
-							Logout
-						</Link>
-					)}
+					<div className={classes.sectionDesktop}>
+						{!auth ? (
+							<Button color="inherit" onClick={() => history.push("/signin")}>
+								Login
+							</Button>
+						) : (
+							<IconButton
+								aria-label="account of current user"
+								aria-controls="menu-desktop"
+								aria-haspopup="true"
+								onClick={handleMenuOpen}
+								color="inherit"
+							>
+								<AccountCircle />
+							</IconButton>
+						)}
+					</div>
+					<div className={classes.sectionMobile}>
+						<IconButton
+							aria-label="show more"
+							aria-controls="menu-mobile"
+							aria-haspopup="true"
+							onClick={handleMobileMenuOpen}
+							color="inherit"
+						>
+							<MoreIcon />
+						</IconButton>
+					</div>
 				</div>
 			</Toolbar>
 			<Drawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+			{renderMenu}
+			{renderMobileMenu}
 		</AppBar>
 	);
 };

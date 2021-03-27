@@ -56,3 +56,5 @@ const authentificationSlice = createSlice({
 export const selectUser = (state) => state.authentification.user;
 
 export default authentificationSlice.reducer;
+
+export const { signout } = authentificationSlice.actions;

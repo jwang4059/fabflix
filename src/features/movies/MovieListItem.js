@@ -7,7 +7,9 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import StarIcon from "@material-ui/icons/Star";
+import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import { selectImageBaseUrl } from "../configuration/configurationSlice";
 import { selectGenreMap } from "../genres/genresSlice";
@@ -15,7 +17,7 @@ import { NoMovie } from "../../components/Placeholder";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
-		margin: theme.spacing(2, 0),
+		margin: "1rem 0",
 	},
 	content: {
 		display: "flex",
@@ -37,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
 		[theme.breakpoints.up("sm")]: {
 			marginRight: "2rem",
 		},
+	},
+	textContainer: {
+		flexGrow: 1,
 	},
 	poster: {
 		height: "18rem",
@@ -67,9 +72,25 @@ const useStyles = makeStyles((theme) => ({
 	marginBottom: {
 		marginBottom: "1rem",
 	},
+	marginLeft: {
+		marginLeft: "1rem",
+	},
 	link: {
 		color: "inherit",
 		textDecoration: "none",
+	},
+	contentHeader: {
+		display: "flex",
+		marginBottom: "1rem",
+		[theme.breakpoints.down("xs")]: {
+			flexDirection: "column",
+		},
+		[theme.breakpoints.up("sm")]: {
+			flexDirection: "row",
+		},
+	},
+	contentHeaderMain: {
+		flexGrow: 1,
 	},
 }));
 
@@ -126,21 +147,30 @@ const MovieListItem = ({ movie }) => {
 						<Link to={`/movie/${movie.id}`}>{poster}</Link>
 					</CardMedia>
 				</div>
-				<div>
+				<div className={classes.textContainer}>
 					<CardContent className={classes.padding}>
-						<div className={classes.marginBottom}>
-							<Typography className={classes.title} component="h2">
-								<Link to={`/movie/${movie.id}`} className={classes.link}>
-									{movie.title}
-								</Link>{" "}
-								<span className={classes.date}>{year ? `(${year})` : ""}</span>
-							</Typography>
-							<Typography>{genres ? genres : ""}</Typography>
-							<div className={classes.rating}>
-								<StarIcon style={{ color: "#FACC15", marginRight: "8px" }} />
-								<Typography>
-									{movie.vote_average ? movie.vote_average : 0}/10
+						<div className={classes.contentHeader}>
+							<div className={classes.contentHeaderMain}>
+								<Typography className={classes.title} component="h2">
+									<Link to={`/movie/${movie.id}`} className={classes.link}>
+										{movie.title}
+									</Link>{" "}
+									{Boolean(year) && (
+										<span className={classes.date}>({year})</span>
+									)}
 								</Typography>
+								{Boolean(genres) && <Typography>{genres}</Typography>}
+								<div className={classes.rating}>
+									<StarIcon style={{ color: "#FACC15", marginRight: "8px" }} />
+									<Typography>
+										{movie.vote_average ? movie.vote_average : 0}/10
+									</Typography>
+								</div>
+							</div>
+							<div className={classes.marginLeft}>
+								<Button variant="outlined" color="primary">
+									<BookmarkBorderOutlinedIcon /> Bookmark
+								</Button>
 							</div>
 						</div>
 						<Typography>

@@ -3,6 +3,7 @@ import authentificationReducer from "../features/authentication/authenticationSl
 import configurationReducer from "../features/configuration/configurationSlice";
 import moviesReducer from "../features/movies/moviesSlice";
 import genresReducer from "../features/genres/genresSlice";
+import bookmarksReducer from "../features/bookmarks/bookmarksSlice";
 
 export default configureStore({
 	reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
 		configuration: configurationReducer,
 		movies: moviesReducer,
 		genres: genresReducer,
+		bookmarks: bookmarksReducer,
 	},
 });

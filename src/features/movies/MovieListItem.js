@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -14,6 +14,7 @@ import Button from "@material-ui/core/Button";
 import { selectImageBaseUrl } from "../configuration/configurationSlice";
 import { selectGenreMap } from "../genres/genresSlice";
 import { NoMovie } from "../../components/Placeholder";
+import { addBookmark } from "../bookmarks/bookmarksSlice";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -96,8 +97,15 @@ const useStyles = makeStyles((theme) => ({
 
 const MovieListItem = ({ movie }) => {
 	const classes = useStyles();
+	const dispatch = useDispatch();
 	const genreMap = useSelector(selectGenreMap);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
+	const auth = useSelector((state) => state.authentification.isAuthenticated);
+	const userId = useSelector((state) => state.authentification.user?.id);
+
+	const handleBookmarkButton = () => {
+		dispatch(addBookmark({ userId, movieId: movie.id }));
+	};
 
 	let poster = null;
 	if (!movie.poster_path) {
@@ -167,11 +175,17 @@ const MovieListItem = ({ movie }) => {
 									</Typography>
 								</div>
 							</div>
-							<div className={classes.marginLeft}>
-								<Button variant="outlined" color="primary">
-									<BookmarkBorderOutlinedIcon /> Bookmark
-								</Button>
-							</div>
+							{Boolean(auth) && (
+								<div className={classes.marginLeft}>
+									<Button
+										variant="outlined"
+										color="primary"
+										onClick={handleBookmarkButton}
+									>
+										<BookmarkBorderOutlinedIcon /> Bookmark
+									</Button>
+								</div>
+							)}
 						</div>
 						<Typography>
 							<span className={classes.semiBold}>Director:</span>{" "}

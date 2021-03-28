@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const MovieListItem = ({ movie }) => {
+const MovieListItem = ({ movie, show }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const genreMap = useSelector(selectGenreMap);
@@ -175,7 +175,7 @@ const MovieListItem = ({ movie }) => {
 									</Typography>
 								</div>
 							</div>
-							{Boolean(auth) && (
+							{auth && show && (
 								<div className={classes.marginLeft}>
 									<Button
 										variant="outlined"
@@ -203,6 +203,10 @@ const MovieListItem = ({ movie }) => {
 			</div>
 		</Card>
 	);
+};
+
+MovieListItem.defaultProps = {
+	show: true,
 };
 
 export default MovieListItem;

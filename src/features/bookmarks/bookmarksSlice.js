@@ -82,6 +82,6 @@ const bookmarksSlice = createSlice({
 	},
 });
 
-export const selectBookmarks = (state) => state.bookmarks.data;
+export const selectAllBookmarks = (state) => state.bookmarks.data;
 
 export default bookmarksSlice.reducer;

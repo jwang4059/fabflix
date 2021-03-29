@@ -1,4 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+	createSlice,
+	createAsyncThunk,
+	createSelector,
+} from "@reduxjs/toolkit";
 
 const initialState = {
 	data: [],
@@ -12,7 +16,7 @@ export const fetchBookmarks = createAsyncThunk(
 		const response = await fetch(
 			"https://fabflix-api.herokuapp.com/bookmarks/fetch",
 			{
-				method: "GET",
+				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(payload),
 			}
@@ -53,6 +57,7 @@ export const deleteBookmark = createAsyncThunk(
 		);
 
 		const data = await response.json();
+		console.log(data);
 		return data;
 	}
 );
@@ -66,16 +71,23 @@ const bookmarksSlice = createSlice({
 			state.status = "loading";
 		},
 		[fetchBookmarks.fulfilled]: (state, action) => {
-			if (action.payload.status === "succeeded") {
-				state.data = action.payload;
-				state.error = null;
-				state.status = "succeeded";
-			} else {
-				state.error = action.payload.message;
-				state.status = "failed";
-			}
+			state.data = action.payload;
+			state.error = null;
+			state.status = "succeeded";
 		},
 		[fetchBookmarks.rejected]: (state, action) => {
+			state.error = action.error.message;
+			state.status = "failed";
+		},
+		[addBookmark.pending]: (state) => {
+			state.status = "loading";
+		},
+		[addBookmark.fulfilled]: (state, action) => {
+			state.data = action.payload;
+			state.error = null;
+			state.status = "succeeded";
+		},
+		[addBookmark.rejected]: (state, action) => {
 			state.error = action.error.message;
 			state.status = "failed";
 		},
@@ -83,5 +95,10 @@ const bookmarksSlice = createSlice({
 });
 
 export const selectAllBookmarks = (state) => state.bookmarks.data;
+
+export const selectAllBookmarkIds = createSelector(
+	[selectAllBookmarks],
+	(bookmarks) => bookmarks.map((bookmark) => bookmark.movieid)
+);
 
 export default bookmarksSlice.reducer;

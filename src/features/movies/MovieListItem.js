@@ -137,7 +137,17 @@ const MovieListItem = ({ movie, show }) => {
 		director = movie.credits.crew.find((person) => person.job === "Director");
 	}
 
-	const genres = movie.genre_ids
+	let genreIds;
+
+	if (movie.genres) {
+		genreIds = movie.genres.map((genre) => genre.id);
+	} else if (movie.genre_ids) {
+		genreIds = movie.genre_ids;
+	} else {
+		genreIds = [];
+	}
+
+	const genres = genreIds
 		.map((id) => {
 			return (
 				<Link to={`/movielist?with_genres=${id}`} key={id}>

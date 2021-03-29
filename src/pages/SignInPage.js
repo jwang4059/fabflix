@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -33,9 +33,11 @@ const useStyles = makeStyles((theme) => ({
 const SignInPage = () => {
 	const classes = useStyles();
 	const history = useHistory();
+	const location = useLocation();
 	const dispatch = useDispatch();
 	const authStatus = useSelector((state) => state.authentification.status);
 	const authError = useSelector((state) => state.authentification.error);
+	let { from } = location.state || { from: { pathname: "/" } };
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -57,9 +59,10 @@ const SignInPage = () => {
 
 	const handleSubmitLogin = async (event) => {
 		event.preventDefault();
+
 		const response = await dispatch(signin({ email, password }));
 		if (response?.payload?.status === "succeeded") {
-			history.push("/");
+			history.replace(from);
 		}
 	};
 

@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
 import Loading from "../components/Loading";
 import MoviesList from "../features/movies/MoviesList";
-import { selectAllBookmarks } from "../features/bookmarks/bookmarksSlice";
+import {
+	fetchBookmarks,
+	selectAllBookmarkIds,
+} from "../features/bookmarks/bookmarksSlice";
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -18,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
 
 const BookmarksPage = () => {
 	const classes = useStyles();
-	const bookmarks = useSelector(selectAllBookmarks);
+	const dispatch = useDispatch();
+	const userId = useSelector((state) => state.authentification.user.id);
+	const movieIds = useSelector(selectAllBookmarkIds);
 	const bookmarksStatus = useSelector((state) => state.bookmarks.status);
 	const bookmarksError = useSelector((state) => state.bookmarks.error);
 	const [movies, setMovies] = useState([]);
@@ -28,11 +33,11 @@ const BookmarksPage = () => {
 		const fetchBookmarkMovies = async () => {
 			try {
 				const response = await fetch(
-					"https://fabflix-api.herokuapp.com/movies/bookmarks",
+					"https://fabflix-api.herokuapp.com/bookmarks/movies",
 					{
-						method: "GET",
+						method: "POST",
 						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({ bookmarks }),
+						body: JSON.stringify({ movieIds }),
 					}
 				);
 
@@ -44,8 +49,9 @@ const BookmarksPage = () => {
 			}
 		};
 
+		if (bookmarksStatus === "idle") dispatch(fetchBookmarks({ userId }));
 		if (bookmarksStatus === "succeeded") fetchBookmarkMovies();
-	}, [bookmarks, bookmarksStatus]);
+	}, [dispatch, userId, movieIds, bookmarksStatus]);
 
 	if (bookmarksError) return <div>Bookmarks Error: {bookmarksError}</div>;
 	if (moviesError) return <div>Movies Error: {moviesError}</div>;

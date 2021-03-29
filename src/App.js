@@ -7,6 +7,7 @@ import {
 	Redirect,
 } from "react-router-dom";
 
+import PrivateRoute from "./components/PrivateRoute";
 import Layout from "./features/layout/Layout";
 import Loading from "./components/Loading";
 import LandingPage from "./pages/LandingPage";
@@ -15,6 +16,7 @@ import SignUpPage from "./pages/SignUpPage";
 import MoviesListPage from "./pages/MovieListPage";
 import MoviePage from "./pages/MoviePage";
 import PersonPage from "./pages/PersonPage";
+import BookmarksPage from "./pages/BookmarksPage";
 import { fetchConfiguration } from "./features/configuration/configurationSlice";
 import { fetchGenres } from "./features/genres/genresSlice";
 
@@ -53,6 +55,9 @@ const App = () => {
 				<Route exact path="/person/:person_id" component={PersonPage} />
 				<Route exact path="/movielist" component={MoviesListPage} />
 				<Route exact path="/movielist/:id" component={MoviesListPage} />
+				<PrivateRoute exact path="/bookmarks">
+					<BookmarksPage />
+				</PrivateRoute>
 				<Redirect to="/" />
 			</Switch>
 		);

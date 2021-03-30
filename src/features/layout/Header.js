@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
 	const classes = useStyles();
 	const history = useHistory();
+	const location = useLocation();
 	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.authentification.isAuthenticated);
 	const [openDrawer, setOpenDrawer] = useState(false);
@@ -88,17 +89,16 @@ const Header = () => {
 		setMobileAnchorEl(null);
 	};
 
-	const handleSigninButton = () => {
+	const handleMenuButton = (path) => {
 		handleMenuClose();
 		handleMobileMenuClose();
-		history.push("/signin");
+		history.push(path, { from: location });
 	};
 
 	const handleSignoutButton = () => {
 		dispatch(signout());
 		handleMenuClose();
 		handleMobileMenuClose();
-		history.push("/");
 	};
 
 	const renderMenu = (
@@ -118,7 +118,10 @@ const Header = () => {
 			onClose={handleMenuClose}
 		>
 			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleSignoutButton}>Logout</MenuItem>
+			<MenuItem onClick={() => handleMenuButton("/bookmarks")}>
+				Bookmarks
+			</MenuItem>
+			,<MenuItem onClick={handleSignoutButton}>Logout</MenuItem>
 		</Menu>
 	);
 
@@ -139,11 +142,17 @@ const Header = () => {
 			onClose={handleMobileMenuClose}
 		>
 			{!auth ? (
-				<MenuItem onClick={handleSigninButton}>Login</MenuItem>
+				<MenuItem onClick={() => handleMenuButton("/signin")}>Login</MenuItem>
 			) : (
 				[
 					<MenuItem key="profile" onClick={handleMobileMenuClose}>
 						Profile
+					</MenuItem>,
+					<MenuItem
+						key="bookmarks"
+						onClick={() => handleMenuButton("/bookmarks")}
+					>
+						Bookmarks
 					</MenuItem>,
 					<MenuItem key="logout" onClick={handleSignoutButton}>
 						Logout
@@ -173,7 +182,10 @@ const Header = () => {
 				<div className={classes.profile}>
 					<div className={classes.sectionDesktop}>
 						{!auth ? (
-							<Button color="inherit" onClick={() => history.push("/signin")}>
+							<Button
+								color="inherit"
+								onClick={() => history.push("/signin", { from: location })}
+							>
 								Login
 							</Button>
 						) : (

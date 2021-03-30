@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: "2.25rem",
 		lineHeight: "2.5rem",
 		fontWeight: "700",
+		margin: "1rem 0",
 	},
 }));
 

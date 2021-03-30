@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -7,14 +7,12 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import StarIcon from "@material-ui/icons/Star";
-import BookmarkBorderOutlinedIcon from "@material-ui/icons/BookmarkBorderOutlined";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 import { selectImageBaseUrl } from "../configuration/configurationSlice";
 import { selectGenreMap } from "../genres/genresSlice";
 import { NoMovie } from "../../components/Placeholder";
-import { addBookmark } from "../bookmarks/bookmarksSlice";
+import { AddBookmarkButton } from "../bookmarks/BookmarkButton";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -97,15 +95,10 @@ const useStyles = makeStyles((theme) => ({
 
 const MovieListItem = ({ movie, show }) => {
 	const classes = useStyles();
-	const dispatch = useDispatch();
 	const genreMap = useSelector(selectGenreMap);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
 	const auth = useSelector((state) => state.authentification.isAuthenticated);
 	const userId = useSelector((state) => state.authentification.user?.id);
-
-	const handleBookmarkButton = () => {
-		dispatch(addBookmark({ userId, movieId: movie.id }));
-	};
 
 	let poster = null;
 	if (!movie.poster_path) {
@@ -187,13 +180,7 @@ const MovieListItem = ({ movie, show }) => {
 							</div>
 							{auth && show && (
 								<div className={classes.marginLeft}>
-									<Button
-										variant="outlined"
-										color="primary"
-										onClick={handleBookmarkButton}
-									>
-										<BookmarkBorderOutlinedIcon /> Bookmark
-									</Button>
+									<AddBookmarkButton userId={userId} movieId={movie.id} />
 								</div>
 							)}
 						</div>

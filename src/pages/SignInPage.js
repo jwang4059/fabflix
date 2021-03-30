@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 
 import { signin } from "../features/authentication/authenticationSlice";
+import { fetchBookmarks } from "../features/bookmarks/bookmarksSlice";
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -61,7 +62,9 @@ const SignInPage = () => {
 		event.preventDefault();
 
 		const response = await dispatch(signin({ email, password }));
+		console.log(response);
 		if (response?.payload?.status === "succeeded") {
+			await dispatch(fetchBookmarks({ userId: response.payload.user.id }));
 			history.replace(from);
 		}
 	};

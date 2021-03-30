@@ -8,7 +8,7 @@ import Loading from "../components/Loading";
 import MoviesList from "../features/movies/MoviesList";
 import {
 	fetchBookmarks,
-	selectAllBookmarkIds,
+	selectAllBookmarks,
 } from "../features/bookmarks/bookmarksSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +24,7 @@ const BookmarksPage = () => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const userId = useSelector((state) => state.authentification.user.id);
-	const movieIds = useSelector(selectAllBookmarkIds);
+	const bookmarks = useSelector(selectAllBookmarks);
 	const bookmarksStatus = useSelector((state) => state.bookmarks.status);
 	const bookmarksError = useSelector((state) => state.bookmarks.error);
 	const [movies, setMovies] = useState([]);
@@ -32,6 +32,8 @@ const BookmarksPage = () => {
 
 	useEffect(() => {
 		const fetchBookmarkMovies = async () => {
+			const movieIds = bookmarks.map((bookmark) => bookmark.movieid);
+
 			try {
 				const response = await fetch(
 					"https://fabflix-api.herokuapp.com/bookmarks/movies",
@@ -52,18 +54,20 @@ const BookmarksPage = () => {
 
 		if (bookmarksStatus === "idle") dispatch(fetchBookmarks({ userId }));
 		if (bookmarksStatus === "succeeded") fetchBookmarkMovies();
-	}, [dispatch, userId, movieIds, bookmarksStatus]);
+	}, [dispatch, userId, bookmarks, bookmarksStatus]);
 
 	if (bookmarksError) return <div>Bookmarks Error: {bookmarksError}</div>;
 	if (moviesError) return <div>Movies Error: {moviesError}</div>;
 	if (!movies) return <Loading />;
+
+	const bookmarkIds = bookmarks.map((bookmark) => bookmark.bookmarkid);
 
 	return (
 		<Container component="main" maxWidth="md">
 			<Typography className={classes.title} component="h1">
 				My Bookmarks
 			</Typography>
-			<MoviesList movies={movies} show={false} />
+			<MoviesList movies={movies} bookmarkIds={bookmarkIds} />
 		</Container>
 	);
 };

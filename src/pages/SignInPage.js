@@ -62,7 +62,6 @@ const SignInPage = () => {
 		event.preventDefault();
 
 		const response = await dispatch(signin({ email, password }));
-		console.log(response);
 		if (response?.payload?.status === "succeeded") {
 			await dispatch(fetchBookmarks({ userId: response.payload.user.id }));
 			history.replace(from);

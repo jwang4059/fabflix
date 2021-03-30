@@ -50,7 +50,7 @@ export const deleteBookmark = createAsyncThunk(
 		const response = await fetch(
 			"https://fabflix-api.herokuapp.com/bookmarks/delete",
 			{
-				method: "DELETE",
+				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(payload),
 			}
@@ -87,6 +87,18 @@ const bookmarksSlice = createSlice({
 			state.status = "succeeded";
 		},
 		[addBookmark.rejected]: (state, action) => {
+			state.error = action.error.message;
+			state.status = "failed";
+		},
+		[deleteBookmark.pending]: (state) => {
+			state.status = "loading";
+		},
+		[deleteBookmark.fulfilled]: (state, action) => {
+			state.data = action.payload;
+			state.error = null;
+			state.status = "succeeded";
+		},
+		[deleteBookmark.rejected]: (state, action) => {
 			state.error = action.error.message;
 			state.status = "failed";
 		},

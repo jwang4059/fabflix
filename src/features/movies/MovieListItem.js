@@ -12,7 +12,10 @@ import Typography from "@material-ui/core/Typography";
 import { selectImageBaseUrl } from "../configuration/configurationSlice";
 import { selectGenreMap } from "../genres/genresSlice";
 import { NoMovie } from "../../components/Placeholder";
-import { AddBookmarkButton } from "../bookmarks/BookmarkButton";
+import {
+	AddBookmarkButton,
+	DeleteBookmarkButton,
+} from "../bookmarks/BookmarkButton";
 
 const useStyles = makeStyles((theme) => ({
 	card: {
@@ -93,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const MovieListItem = ({ movie, show }) => {
+const MovieListItem = ({ movie, bookmarkId }) => {
 	const classes = useStyles();
 	const genreMap = useSelector(selectGenreMap);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
@@ -178,9 +181,16 @@ const MovieListItem = ({ movie, show }) => {
 									</Typography>
 								</div>
 							</div>
-							{auth && show && (
+							{auth && (
 								<div className={classes.marginLeft}>
-									<AddBookmarkButton userId={userId} movieId={movie.id} />
+									{Boolean(bookmarkId) ? (
+										<DeleteBookmarkButton
+											userId={userId}
+											bookmarkId={bookmarkId}
+										/>
+									) : (
+										<AddBookmarkButton userId={userId} movieId={movie.id} />
+									)}
 								</div>
 							)}
 						</div>
@@ -200,10 +210,6 @@ const MovieListItem = ({ movie, show }) => {
 			</div>
 		</Card>
 	);
-};
-
-MovieListItem.defaultProps = {
-	show: true,
 };
 
 export default MovieListItem;

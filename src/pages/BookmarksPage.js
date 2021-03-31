@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
 import Loading from "../components/Loading";
+import MovieListBackButton from "../components/MovieListBackButton";
 import MoviesList from "../features/movies/MoviesList";
 import {
 	fetchBookmarks,
@@ -68,6 +69,7 @@ const BookmarksPage = () => {
 				My Bookmarks
 			</Typography>
 			<MoviesList movies={movies} bookmarkIds={bookmarkIds} />
+			<MovieListBackButton />
 		</Container>
 	);
 };

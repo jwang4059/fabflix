@@ -64,7 +64,13 @@ export const deleteBookmark = createAsyncThunk(
 const bookmarksSlice = createSlice({
 	name: "bookmarks",
 	initialState,
-	reducers: {},
+	reducers: {
+		clearBookmarks(state) {
+			state.data = [];
+			state.status = "idle";
+			state.error = null;
+		},
+	},
 	extraReducers: {
 		[fetchBookmarks.pending]: (state) => {
 			state.status = "loading";
@@ -111,5 +117,7 @@ export const selectAllBookmarkIds = createSelector(
 	[selectAllBookmarks],
 	(bookmarks) => bookmarks.map((bookmark) => bookmark.movieid)
 );
+
+export const { clearBookmarks } = bookmarksSlice.actions;
 
 export default bookmarksSlice.reducer;

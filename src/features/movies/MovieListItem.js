@@ -100,8 +100,6 @@ const MovieListItem = ({ movie, bookmarkId }) => {
 	const classes = useStyles();
 	const genreMap = useSelector(selectGenreMap);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
-	const auth = useSelector((state) => state.authentification.isAuthenticated);
-	const userId = useSelector((state) => state.authentification.user?.id);
 
 	let poster = null;
 	if (!movie.poster_path) {
@@ -181,18 +179,13 @@ const MovieListItem = ({ movie, bookmarkId }) => {
 									</Typography>
 								</div>
 							</div>
-							{auth && (
-								<div className={classes.marginLeft}>
-									{Boolean(bookmarkId) ? (
-										<DeleteBookmarkButton
-											userId={userId}
-											bookmarkId={bookmarkId}
-										/>
-									) : (
-										<AddBookmarkButton userId={userId} movieId={movie.id} />
-									)}
-								</div>
-							)}
+							<div className={classes.marginLeft}>
+								{Boolean(bookmarkId) ? (
+									<DeleteBookmarkButton bookmarkId={bookmarkId} />
+								) : (
+									<AddBookmarkButton movieId={movie.id} />
+								)}
+							</div>
 						</div>
 						<Typography>
 							<span className={classes.semiBold}>Director:</span>{" "}

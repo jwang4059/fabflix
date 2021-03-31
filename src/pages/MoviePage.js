@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import StarIcon from "@material-ui/icons/Star";
 
 import Loading from "../components/Loading";
@@ -13,6 +12,8 @@ import { NoMovie, NoPersons } from "../components/Placeholder";
 import HorizontalScrollContainer from "../components/HorizonalScrollContainer";
 import { selectImageBaseUrl } from "../features/configuration/configurationSlice";
 import StarCard from "../features/movies/StarCard";
+import { AddBookmarkButton } from "../features/bookmarks/BookmarkButton";
+import MovieListBackButton from "../components/MovieListBackButton";
 
 const useStyles = makeStyles((theme) => ({
 	backdrop: {
@@ -91,6 +92,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	semiBold: {
 		fontWeight: 600,
+	},
+	marginBottom: {
+		marginBottom: "2rem",
 	},
 }));
 
@@ -191,9 +195,6 @@ const Stars = ({ classes, movie }) => {
 const MoviePage = () => {
 	const classes = useStyles();
 	const { movie_id } = useParams();
-	const history = useHistory();
-
-	const movielistUrl = useSelector((state) => state.movies.url);
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
 	const [movie, setMovie] = useState(null);
 
@@ -225,22 +226,16 @@ const MoviePage = () => {
 						<MovieInfo classes={classes} movie={movie} />
 						<Rating classes={classes} movie={movie} />
 					</div>
-					<Typography>{movie.overview}</Typography>
+					<Typography className={classes.marginBottom}>
+						{movie.overview}
+					</Typography>
+					<AddBookmarkButton movieId={movie_id} />
 				</div>
 			</section>
 
 			<Stars classes={classes} movie={movie} />
 
-			<Box display="flex" justifyContent="center" alignItems="center">
-				<Button
-					variant="contained"
-					color="primary"
-					size="large"
-					onClick={() => history.push(movielistUrl)}
-				>
-					Back to movie list
-				</Button>
-			</Box>
+			<MovieListBackButton />
 		</Container>
 	);
 };

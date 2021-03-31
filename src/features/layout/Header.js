@@ -15,6 +15,7 @@ import Menu from "@material-ui/core/Menu";
 import SearchBar from "../../components/SearchBar";
 import Drawer from "../../components/Drawer";
 import { signout } from "../authentication/authenticationSlice";
+import { clearBookmarks } from "../bookmarks/bookmarksSlice";
 
 const useStyles = makeStyles((theme) => ({
 	navigation: {
@@ -96,6 +97,7 @@ const Header = () => {
 	};
 
 	const handleSignoutButton = () => {
+		dispatch(clearBookmarks());
 		dispatch(signout());
 		handleMenuClose();
 		handleMobileMenuClose();
@@ -117,7 +119,6 @@ const Header = () => {
 			open={open}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
 			<MenuItem onClick={() => handleMenuButton("/bookmarks")}>
 				Bookmarks
 			</MenuItem>
@@ -145,9 +146,6 @@ const Header = () => {
 				<MenuItem onClick={() => handleMenuButton("/signin")}>Login</MenuItem>
 			) : (
 				[
-					<MenuItem key="profile" onClick={handleMobileMenuClose}>
-						Profile
-					</MenuItem>,
 					<MenuItem
 						key="bookmarks"
 						onClick={() => handleMenuButton("/bookmarks")}

@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -21,9 +21,11 @@ const Alert = (props) => {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
 };
 
-export const AddBookmarkButton = ({ userId, movieId }) => {
+export const AddBookmarkButton = ({ movieId }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const auth = useSelector((state) => state.authentification.isAuthenticated);
+	const userId = useSelector((state) => state.authentification.user?.id);
 
 	const [open, setOpen] = React.useState(false);
 	const [toast, setToast] = React.useState(null);
@@ -55,8 +57,16 @@ export const AddBookmarkButton = ({ userId, movieId }) => {
 	};
 
 	return (
-		<div className={classes.root}>
-			<Button variant="outlined" color="primary" onClick={handleClick}>
+		<div
+			className={classes.root}
+			title={!auth ? "Must be signed in to bookmark" : null}
+		>
+			<Button
+				variant="outlined"
+				color="primary"
+				disabled={!auth}
+				onClick={handleClick}
+			>
 				<BookmarkBorderOutlinedIcon /> Bookmark
 			</Button>
 			<Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
@@ -66,9 +76,11 @@ export const AddBookmarkButton = ({ userId, movieId }) => {
 	);
 };
 
-export const DeleteBookmarkButton = ({ userId, bookmarkId }) => {
+export const DeleteBookmarkButton = ({ bookmarkId }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+	const auth = useSelector((state) => state.authentification.isAuthenticated);
+	const userId = useSelector((state) => state.authentification.user?.id);
 
 	const [open, setOpen] = React.useState(false);
 	const [toast, setToast] = React.useState(null);
@@ -101,7 +113,12 @@ export const DeleteBookmarkButton = ({ userId, bookmarkId }) => {
 
 	return (
 		<div className={classes.root}>
-			<Button variant="outlined" color="secondary" onClick={handleClick}>
+			<Button
+				variant="outlined"
+				color="secondary"
+				disabled={!auth}
+				onClick={handleClick}
+			>
 				<BookmarkBorderOutlinedIcon /> Delete
 			</Button>
 			<Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

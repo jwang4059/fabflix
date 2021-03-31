@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 import Loading from "../components/Loading";
 import { NoPerson, NoMovies } from "../components/Placeholder";
 import HorizontalScrollContainer from "../components/HorizonalScrollContainer";
 import { selectImageBaseUrl } from "../features/configuration/configurationSlice";
 import MovieCard from "../features/movies/MovieCard";
+import MovieListBackButton from "../components/MovieListBackButton";
 
 const useStyles = makeStyles((theme) => ({
 	main: {
@@ -103,11 +103,8 @@ const Movies = ({ classes, person }) => {
 };
 
 const PersonPage = () => {
-	const { person_id } = useParams();
-	const history = useHistory();
-	const movielistUrl = useSelector((state) => state.movies.url);
-
 	const classes = useStyles();
+	const { person_id } = useParams();
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
 	const [person, setPerson] = useState(null);
 
@@ -152,16 +149,7 @@ const PersonPage = () => {
 
 			<Movies classes={classes} person={person} />
 
-			<Box display="flex" justifyContent="center" alignItems="center">
-				<Button
-					variant="contained"
-					color="primary"
-					size="large"
-					onClick={() => history.push(movielistUrl)}
-				>
-					Back to movie list
-				</Button>
-			</Box>
+			<MovieListBackButton />
 		</Container>
 	);
 };

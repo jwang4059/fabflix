@@ -15,13 +15,7 @@ const Footer = () => {
 	return (
 		<footer className={classes.footer}>
 			<Typography variant="body2" color="textSecondary" align="center">
-				© {new Date().getFullYear()}, Built with
-				{` `}
-				<a href="https://github.com/facebook/create-react-app">
-					Create React App
-				</a>
-				<br />
-				Created by John Wang 2021
+				Designed and Built by John Wang
 			</Typography>
 		</footer>
 	);

@@ -15,7 +15,11 @@ const Footer = () => {
 	return (
 		<footer className={classes.footer}>
 			<Typography variant="body2" color="textSecondary" align="center">
-				<a href="https://johnwang.netlify.app/" target="_blank">
+				<a
+					href="https://johnwang.netlify.app/"
+					target="_blank"
+					rel="noreferrer"
+				>
 					Design and Built by John Wang
 				</a>
 			</Typography>

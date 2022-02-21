@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const StarCard = ({ movie }) => {
+const MovieCard = ({ movie }) => {
 	const classes = useStyles();
 	const imageBaseUrl = useSelector(selectImageBaseUrl);
 
@@ -60,4 +60,4 @@ const StarCard = ({ movie }) => {
 	);
 };
 
-export default StarCard;
+export default MovieCard;
